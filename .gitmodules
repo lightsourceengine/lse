@@ -1,0 +1,15 @@
+[submodule "external/node-api-headers/repo"]
+	path = external/node-api-headers/repo
+	url = https://github.com/nodejs/node-api-headers.git
+[submodule "external/munit/repo"]
+	path = external/munit/repo
+	url = https://github.com/nemequ/munit.git
+[submodule "external/STC/repo"]
+	path = external/STC/repo
+	url = https://github.com/tylov/STC.git
+[submodule "external/freetype/repo"]
+	path = external/freetype/repo
+	url = https://github.com/freetype/freetype.git
+[submodule "external/stb/repo"]
+	path = external/stb/repo
+	url = https://github.com/nothings/stb.git

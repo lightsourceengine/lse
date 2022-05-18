@@ -1,0 +1,15 @@
+# third party code
+external/* linguist-vendored
+
+# build files
+*.gyp -linguist-detectable
+*.gypi -linguist-detectable
+publishing/* -linguist-detectable
+
+# tools
+tools/* -linguist-detectable
+lse-package/rollup/* -linguist-detectable
+lse-package/source-gen/* -linguist-detectable
+
+# embedded assets
+lse-lib/src/roboto-regular-latin-woff.c -linguist-detectable
