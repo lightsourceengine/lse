@@ -25,7 +25,7 @@ _popd () {
 }
 
 get_version() {
-  echo $(node -p "JSON.parse(require('fs').readFileSync('$1', 'utf8')).version")
+  $(node -p "JSON.parse(require('fs').readFileSync('$1', 'utf8')).version")
 }
 
 create_npm_package() {
@@ -37,8 +37,8 @@ create_npm_package() {
 
   _pushd "${SOURCE_DIR}"
   npm pack > /dev/null 2>&1
-  tar -xzf lse-${1}-${VERSION}.tgz -C "${TARGET_DIR}"
-  rm lse-${1}-${VERSION}.tgz
+  tar -xzf "lse-${1}-${VERSION}.tgz" -C "${TARGET_DIR}"
+  rm "lse-${1}-${VERSION}.tgz"
   _popd
 
   OVERLAY="${SOURCE_DIR}/publishing/package-overlay.json5"
@@ -60,7 +60,7 @@ create_npm_package() {
 
   # TODO: find a better home for this packaging step
   if [ "$1" = "core" ]; then
-    function source_to_target() {
+    source_to_target() {
       S="${SOURCE_ROOT}/${1}"
       T="${TARGET_DIR}/package/addon/${2}"
 

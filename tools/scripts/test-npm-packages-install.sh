@@ -28,7 +28,7 @@ fi
 
 # Install all packages to the working directory
 
-export npm_config_lse_install_opts="--jobs max"
+export npm_config_lse_install_opts="--release"
 
 rm -rf package*.json node_modules
 
