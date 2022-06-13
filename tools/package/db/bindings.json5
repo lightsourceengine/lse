@@ -1,0 +1,72 @@
+{
+  namespace: {
+    nsglobal: {
+      bind: "void lse_core_class_bind(env, string, napi_value)"
+    },
+    nskeyboard: {
+      $self: "lse_keyboard",
+      $interface: true,
+      $include: "lse_keyboard.h",
+
+      getId: "int lse_keyboard_get_id()",
+      getUUID: "cstring lse_keyboard_get_uuid()",
+      getName: "cstring lse_keyboard_get_name()",
+      isConnected: "bool lse_keyboard_is_connected()",
+      getScancodeState: "bool lse_keyboard_get_scancode_state(scancode)",
+    },
+    nsimage: {
+      $self: "lse_image",
+      $include: "lse_image.h",
+
+      getWidth: "int lse_image_get_width()",
+      getHeight: "int lse_image_get_height()",
+      getState: "int lse_image_get_state()",
+    },
+    nsfont: {
+      $self: "lse_font",
+      $include: "lse_font.h",
+
+      getUri: "string lse_font_get_uri()",
+      getIndex: "int lse_font_get_index()",
+      getFamily: "string lse_font_get_family()",
+      getStyle: "int lse_font_get_style()",
+      getWeight: "int lse_font_get_weight()",
+      getState: "int lse_font_get_state()",
+    },
+    nsgamepad: {
+      $self: "lse_gamepad",
+      $interface: true,
+      $include: "lse_gamepad.h",
+
+      getId: "int lse_gamepad_get_id()",
+      getUUID: "cstring lse_gamepad_get_uuid()",
+      getName: "cstring lse_gamepad_get_name()",
+      isConnected: "bool lse_gamepad_is_connected()",
+      getButtonState: "bool lse_gamepad_get_button_state(int)",
+      getAxisState: "float lse_gamepad_get_axis_state(int)",
+      getHatState: "int lse_gamepad_get_hat_state(int)",
+      getAnalogState: "float lse_gamepad_get_analog_state(analog_key)",
+      getKeyState: "bool lse_gamepad_get_key_state(key)",
+      getButtonCount: "int lse_gamepad_get_button_count()",
+      getAxisCount: "int lse_gamepad_get_axis_count()",
+      getHatCount: "int lse_gamepad_get_hat_count()",
+    },
+    nsnode: {
+      $self: "lse_node",
+      $interface: true,
+      $include: "lse_node.h",
+
+      getX: "float lse_node_get_x()",
+      getY: "float lse_node_get_y()",
+      getWidth: "float lse_node_get_width()",
+      getHeight: "float lse_node_get_height()",
+      appendChild: "bool lse_node_append(node)",
+      insertChild: "bool lse_node_insert_before(node, node)",
+      removeChild: "bool lse_node_remove_child(node)",
+      getStyle: "style_ref lse_node_get_style()",
+      destroy: "void lse_node_destroy()",
+      setSource: "bool lse_node_set_src(string)",
+      setText: "bool lse_node_set_text(string)",
+    },
+  }
+}

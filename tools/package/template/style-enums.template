@@ -1,0 +1,43 @@
+// clang-format off
+
+typedef enum {
+{{#each this.properties}}
+  {{toPropertyEnumValue @key}} = {{@index}},
+{{/each}}
+} lse_style_property;
+
+{{#each this.types}}
+typedef enum {{toEnumName @key}} {
+{{#values}}
+  {{toEnumValue @../key this}} = {{@index}},
+{{/values}}
+} {{toEnumName @key}};
+#define k_{{toEnumName @key}}_count {{values.length}}
+
+{{/each}}
+typedef enum {
+  LSE_STYLE_PROPERTY_TYPE_NUMBER = 0,
+  LSE_STYLE_PROPERTY_TYPE_ENUM = 1,
+  LSE_STYLE_PROPERTY_TYPE_COLOR = 2,
+  LSE_STYLE_PROPERTY_TYPE_STRING = 3,
+  LSE_STYLE_PROPERTY_TYPE_FILTER = 4,
+  LSE_STYLE_PROPERTY_TYPE_TRANSFORM = 5,
+  LSE_STYLE_PROPERTY_TYPE_UNKNOWN = -1,
+} lse_style_property_type;
+
+typedef enum {
+  LSE_STYLE_TRANSFORM_IDENTITY = 0,
+  LSE_STYLE_TRANSFORM_TRANSLATE = 1,
+  LSE_STYLE_TRANSFORM_SCALE = 2,
+  LSE_STYLE_TRANSFORM_ROTATE = 3,
+} lse_style_transform_op;
+#define lse_is_style_transform_op(T) ((T) >= 0 && (T) <= 3)
+
+typedef enum {
+  LSE_STYLE_FILTER_FLIP_H = 0,
+  LSE_STYLE_FILTER_FLIP_V = 1,
+  LSE_STYLE_FILTER_TINT = 2,
+} lse_style_filter_function;
+#define lse_is_style_filter_function(T) ((T) >= 0 && (T) <= 2)
+
+// clang-format on

@@ -1,0 +1,237 @@
+/*
+ * Copyright (c) 2022 Light Source Software, LLC. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+
+// ////////////////////////////////////////////////////////////////////////////
+// AUTO-GENERATED - DO NOT EDIT
+// clang-format off
+// ////////////////////////////////////////////////////////////////////////////
+
+#include "lse_style_meta.h"
+
+#include <stdbool.h>
+#include <stc/ccommon.h>
+
+#include "lse_string.h"
+
+static uint64_t mask(uint64_t bitWidth, uint64_t offset);
+#define is_any(IGNORE) true
+#define is_gte0(NUMERIC) ((NUMERIC)->value >= 0)
+static bool is_xanchor(const lse_style_value* numeric);
+static bool is_yanchor(const lse_style_value* numeric);
+static bool is_opacity(const lse_style_value* numeric);
+#define has_unit(UNIT, FLAGS) (((UNIT) & (FLAGS)) != 0)
+
+#define F(UNIT_VALUE) (1 << LSE_STYLE_UNIT_ ## UNIT_VALUE)
+#define UNIT_MASK_ANCHOR F(ANCHOR)
+#define UNIT_MASK_AUTO F(AUTO)
+#define UNIT_MASK_PX F(PX)
+#define UNIT_MASK_PT F(PT)
+#define UNIT_MASK_PERCENT F(PERCENT)
+#define UNIT_MASK_PIXELISH (F(PX) | F(PT) | F(VMIN) | F(VMAX) | F(VW) | F(VH) | F(REM))
+
+typedef struct {
+  bool layout;
+  lse_style_property_type type;
+  const char** enum_values;
+  int32_t enum_values_size;
+  uint64_t enum_offset;
+  uint64_t enum_bit_width;
+} property_info;
+
+typedef struct {
+  const char* postfix;
+  lse_style_unit unit;
+} unit_postfix_entry;
+
+{{#each this.types}}
+static const char* k_str_{{undash @key}}[] = {
+{{#values}}
+  "{{this}}",
+{{/values}}
+};
+
+{{#if this.postFix}}
+static unit_postfix_entry k_post_fix_map [] = {
+  {{#each this.postFix}}
+  {{#if this}}
+  { .postfix = "{{this}}", .unit = {{@index}} },
+  {{/if}}
+  {{/each}}
+};
+{{/if}}
+
+{{/each}}
+static const property_info k_property_info[] = {
+{{#each this.properties}}
+  /* {{@key}} */
+  { .type = {{toPropertyTypeEnum this.type}}, .layout = {{this.layout}}, {{#if this.enumType}}.enum_values = k_str_{{undash this.enumType}}, .enum_values_size = {{this.enumValues.length}}, .enum_bit_width = {{this.enumBitWidth}}, .enum_offset = {{this.enumOffset}}{{else}}.enum_values_size = 0{{/if}}, },
+{{/each}}
+};
+
+bool lse_style_meta_is_style_property(int32_t value) {
+  return value >= 0 && value < {{countKeys properties}};
+}
+
+lse_style_property_type lse_style_meta_get_property_type(lse_style_property prop) {
+  return k_property_info[prop].type;
+}
+
+bool lse_style_meta_is_layout_property(lse_style_property prop) {
+  return k_property_info[prop].layout;
+}
+
+bool lse_style_meta_is_compatible_unit(lse_style_property prop, lse_style_unit unit) {
+  return false;
+}
+
+bool lse_style_meta_is_enum_value(lse_style_property prop, int32_t value) {
+  return k_property_info[prop].type == LSE_STYLE_PROPERTY_TYPE_ENUM
+    && value >= 0 && value < k_property_info[prop].enum_values_size;
+}
+
+bool lse_style_meta_is_valid_numeric_value(lse_style_property prop, const lse_style_value* numeric) {
+  switch (prop) {
+    {{#each this.properties}}
+    {{#if_eq this.type 'number'}}
+    case {{toPropertyEnumValue @key}}:
+      return has_unit(numeric->unit, 0{{#each this.units}} | UNIT_MASK_{{toUpperCase this}}{{/each}}) && is_{{this.constraint}}(numeric);
+    {{/if_eq}}
+    {{/each}}
+    default:
+      return false;
+  };
+}
+
+int32_t lse_style_meta_enum_from_string(lse_style_property prop, const char* string_value) {
+  int32_t i;
+  int32_t len = k_property_info[prop].enum_values_size;
+
+  if (string_value) {
+    for (i = 0; i < len; i++) {
+      if (c_strncasecmp(k_property_info[prop].enum_values[i], string_value, SIZE_MAX) == 0) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+}
+
+const char* lse_style_meta_enum_to_string(lse_style_property prop, int32_t enum_value) {
+  if (lse_style_meta_is_enum_value(prop, enum_value)) {
+    return k_property_info[prop].enum_values[enum_value];
+  }
+
+  return NULL;
+}
+
+int32_t lse_style_meta_get_enum(lse_style_property prop, uint64_t flags) {
+  if (k_property_info[prop].type == LSE_STYLE_PROPERTY_TYPE_ENUM) {
+    return (int32_t)((flags & mask(k_property_info[prop].enum_bit_width, k_property_info[prop].enum_offset)) >> k_property_info[prop].enum_offset);
+  }
+
+  return -1;
+}
+
+uint64_t lse_style_meta_set_enum(lse_style_property prop, int32_t enum_value, uint64_t flags) {
+  if (k_property_info[prop].type == LSE_STYLE_PROPERTY_TYPE_ENUM && lse_style_meta_is_enum_value(prop, enum_value)) {
+    uint32_t mask_value = mask(k_property_info[prop].enum_bit_width, k_property_info[prop].enum_offset);
+
+    return ((flags & ~mask_value) | ((enum_value << k_property_info[prop].enum_offset) & (mask_value)));
+  }
+
+  return flags;
+}
+
+bool lse_style_meta_is_anchor(int32_t value) {
+  return value >= 0 && value < (int32_t)c_arraylen(k_str_anchor);
+}
+
+bool lse_style_meta_is_unit(int32_t value) {
+  return value >= 0 && value < (int32_t)c_arraylen(k_str_unit);
+}
+
+static uint64_t mask(uint64_t bitWidth, uint64_t offset) {
+  return ((1 << bitWidth) - 1) << offset;
+}
+
+static bool is_xanchor(const lse_style_value* numeric) {
+  if (numeric->unit == LSE_STYLE_UNIT_ANCHOR) {
+    switch ((int32_t)numeric->value) {
+      case LSE_STYLE_ANCHOR_LEFT:
+      case LSE_STYLE_ANCHOR_RIGHT:
+      case LSE_STYLE_ANCHOR_CENTER:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  return false;
+}
+
+static bool is_yanchor(const lse_style_value* numeric) {
+  if (numeric->unit == LSE_STYLE_UNIT_ANCHOR) {
+    switch ((int32_t)numeric->value) {
+      case LSE_STYLE_ANCHOR_TOP:
+      case LSE_STYLE_ANCHOR_BOTTOM:
+      case LSE_STYLE_ANCHOR_CENTER:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  return false;
+}
+
+static bool is_opacity(const lse_style_value* numeric) {
+  switch (numeric->unit) {
+    case LSE_STYLE_UNIT_PX:
+      return numeric->value >= 0 && numeric->value <= 1;
+    case LSE_STYLE_UNIT_PERCENT:
+      return numeric->value >= 0 && numeric->value <= 100;
+    default:
+      return false;
+  }
+}
+
+int32_t lse_style_meta_anchor_from_string(const char* string_value) {
+  int32_t i;
+  int32_t len = c_arraylen(k_str_anchor);
+
+  if (string_value) {
+    for (i = 0; i < len; i++) {
+      if (c_strncasecmp(k_str_anchor[i], string_value, SIZE_MAX) == 0) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+}
+
+int32_t lse_style_meta_unit_from_postfix_string(const char* string_value) {
+  int32_t i;
+  int32_t len = c_arraylen(k_post_fix_map);
+
+  if (string_value) {
+    for (i = 0; i < len; i++) {
+      if (c_strncasecmp(k_post_fix_map[i].postfix, string_value, SIZE_MAX) == 0) {
+        return k_post_fix_map[i].unit;
+      }
+    }
+  }
+
+  return -1;
+}

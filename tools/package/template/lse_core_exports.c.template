@@ -1,0 +1,92 @@
+/*
+ * Copyright (c) 2022 Light Source Software, LLC. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+
+// ////////////////////////////////////////////////////////////////////////////
+// AUTO-GENERATED - DO NOT EDIT
+// clang-format off
+// ////////////////////////////////////////////////////////////////////////////
+
+#include "lse_core.h"
+
+#include "napix.h"
+#include <limits.h>
+#include <lse_object.h>
+#include <stc/ccommon.h>
+{{#namespace}}
+{{#each this}}
+{{#if this.$include}}#include <{{this.$include}}>{{/if}}
+{{/each}}
+{{/namespace}}
+
+#define lse_core_unbox_self(ENV, X) (self)
+#define lse_core_unbox_napi_value(ENV, VALUE) (VALUE)
+#define lse_core_unbox_int(ENV, VALUE) napix_unbox_i((ENV), (VALUE), INT_MIN)
+#define lse_core_unbox_string(ENV, VALUE) lse_core_unbox_s((ENV), (VALUE))
+#define lse_core_unbox_node(ENV, VALUE) (lse_node*)lse_core_unwrap((ENV), (VALUE))
+
+#define lse_core_box_int(ENV, VALUE) napix_create_int32((ENV), (VALUE))
+#define lse_core_box_float(ENV, VALUE) napix_create_float((ENV), (VALUE))
+#define lse_core_box_bool(ENV, VALUE) napix_get_boolean((ENV), (VALUE))
+#define lse_core_box_string(ENV, VALUE) napix_create_string((ENV), lse_string_as_cstring((VALUE)))
+#define lse_core_box_cstring(ENV, VALUE) napix_create_string((ENV), (VALUE))
+#define lse_core_box_style_ref(ENV, VALUE) lse_core_class_new_with_object_ref((ENV), lse_style_type, (lse_object*)(VALUE))
+{{#namespace}}
+{{#each this}}
+{{#each this}}
+{{#if (isFunctionName @key)}}
+
+static napi_value {{@../key}}_{{@key}}(napi_env env, napi_callback_info info) {
+  {{#if ../$self}}
+  {{../$self}}* self;
+  {{/if}}
+  {{#if this.return}}
+  {{this.nativeReturn}} result;
+  {{/if}}
+  napi_value args[{{this.args.length}}];
+
+  if (!lse_core_get_cb_info(env, info, {{#if ../$self}}(void**)&self{{else}}NULL{{/if}}, {{this.typeId}}, {{this.isInterface}}, args, c_arraylen(args))) {
+    return JS_UNDEFINED;
+  }
+
+  {{#if this.return}}result = {{/if}}{{this.native}}({{#if this.env}}env,{{/if}}
+  {{#args}}
+    {{this}}(env, args[{{@index}}]){{#unless @last}},{{/unless}}
+  {{/args}}
+  );
+
+  return {{#if this.return}}{{this.returnBox}}(env, result){{else}}JS_UNDEFINED{{/if}};
+}
+{{/if}}
+{{/each}}
+{{/each}}
+{{/namespace}}
+
+void lse_core_exports(napi_env env, napi_value exports) {
+{{#namespace}}
+{{#each this}}
+  lse_function {{@key}}[] = {
+{{#each this}}
+{{#if (isFunctionName @key)}}
+    { "{{@key}}", &{{@../key}}_{{@key}} },
+{{/if}}
+{{/each}}
+  };
+{{/each}}
+{{/namespace}}
+
+{{#namespace}}
+{{#each this}}
+  lse_core_export_namespace(env, exports, "{{@key}}", {{@key}}, c_arraylen({{@key}}));
+{{/each}}
+{{/namespace}}
+}

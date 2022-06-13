@@ -1,0 +1,35 @@
+{
+  "name": "@internal/tools",
+  "version": "0.0.0-private.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "gen-bindings": "bin/gen-bindings.mjs",
+    "gen-style": "bin/gen-style.mjs",
+    "gen-test": "bin/gen-test.mjs",
+    "package-overlay": "bin/package-overlay.mjs",
+    "lint-cc": "bin/lint-cc.mjs",
+    "create-runtime": "bin/create-runtime.mjs"
+  },
+  "scripts": {
+    "bundle": "nothing",
+    "build": "nothing",
+    "build-release": "nothing",
+    "build-debug": "nothing",
+    "clean": "nothing",
+    "lint-js": "standard",
+    "test-js": "nothing"
+  },
+  "standard": {
+    "ignore": [
+      "db/",
+      "template/",
+      "node_modules/"
+    ],
+    "parser": "@babel/eslint-parser",
+    "env": {
+      "node": true,
+      "mocha": true
+    }
+  }
+}
