@@ -1,0 +1,30 @@
+#!/bin/sh
+
+V_SHARE_HOME="$(cd "$(dirname "$0")/../share" && pwd -P)"
+V_NODE_BIN=${V_SHARE_HOME}/node/bin/node
+LSE_PATH="${V_SHARE_HOME}/intrinsic"
+
+{{#if installGameControllerDb}}
+export LSE_GAME_CONTROLLER_DB="${LSE_GAME_CONTROLLER_DB:-"${V_SHARE_HOME}/assets/gamecontrollerdb.txt"}"
+{{/if}}
+
+{{#if (isMacOS platform)}}
+export LSE_SDL_LIBRARY="${LSE_SDL_LIBRARY:-"${V_SHARE_HOME}/lib/SDL2.framework/SDL2"}"
+{{/if}}
+
+{{#if (isNClassic platformType)}}
+export LSE_SDL_LIBRARY="${LSE_SDL_LIBRARY:-"libSDL2.so"}"
+{{/if}}
+
+{{#if (isPi platformType)}}
+export LSE_SDL_LIBRARY="${LSE_SDL_LIBRARY:-"${V_SHARE_HOME}/lib/libSDL2.so"}"
+{{/if}}
+
+if [ "$1" = "--no-loader" ]; then
+  shift
+  ${V_NODE_BIN} "$@"
+elif [ "$1" = "--loader" ]; then
+  ${V_NODE_BIN} "$@"
+else
+  ${V_NODE_BIN} --loader "${LSE_PATH}/@lse/loader/loader.mjs" "$@"
+fi

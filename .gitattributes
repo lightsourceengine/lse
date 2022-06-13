@@ -7,9 +7,7 @@ external/* linguist-vendored
 publishing/* -linguist-detectable
 
 # tools
-tools/* -linguist-detectable
-lse-package/rollup/* -linguist-detectable
-lse-package/source-gen/* -linguist-detectable
+tools/scripts/* -linguist-detectable
 
 # embedded assets
-lse-lib/src/roboto-regular-latin-woff.c -linguist-detectable
+lib/src/roboto-regular-latin-woff.c -linguist-detectable

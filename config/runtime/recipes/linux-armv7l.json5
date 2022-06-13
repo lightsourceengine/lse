@@ -1,0 +1,11 @@
+{
+  platform: 'linux',
+  targetArch: 'armv7l',
+  installGameControllerDb: true,
+  format: 'tgz',
+  nodeMinimal: true,
+  nodeBinCompress: false,
+  nodeBinStrip: true,
+  coreBinStrip: true,
+  nodeSrc: 'ci',
+}

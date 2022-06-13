@@ -1,0 +1,14 @@
+{
+  platform: 'linux',
+  platformType: 'pi',
+  targetArch: 'armv7l',
+  installGameControllerDb: true,
+  format: 'tgz',
+  nodeMinimal: true,
+  nodeBinCompress: true,
+  nodeBinStrip: true,
+  coreBinStrip: true,
+  sdlRuntime: '2.0.14',
+  nodeCustomTag: 'pi_xnpm_xintl',
+  nodeSrc: 'ci',
+}

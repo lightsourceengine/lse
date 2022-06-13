@@ -1,0 +1,9 @@
+{
+  platform: 'windows',
+  targetArch: 'x64',
+  installGameControllerDb: true,
+  format: 'zip',
+  nodeMinimal: true,
+  nodeBinCompress: false,
+  sdlRuntime: '2.0.22'
+}

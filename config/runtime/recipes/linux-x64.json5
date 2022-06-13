@@ -1,0 +1,10 @@
+{
+  platform: 'linux',
+  targetArch: 'x64',
+  installGameControllerDb: true,
+  format: 'tgz',
+  nodeMinimal: true,
+  nodeBinCompress: false,
+  nodeBinStrip: true,
+  coreBinStrip: true,
+}

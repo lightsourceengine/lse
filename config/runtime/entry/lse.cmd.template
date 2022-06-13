@@ -1,0 +1,18 @@
+@echo off
+
+SET V_SHARE_HOME=%~dp0
+
+{{#if install_game_controller_db}}
+IF "%LSE_GAME_CONTROLLER_DB%"=="" (SET LSE_GAME_CONTROLLER_DB=%V_SHARE_HOME%\assets\gamecontrollerdb.txt)
+{{/if}}
+
+IF "%1"=="--no-loader" (
+  SHIFT
+  START "" "%V_SHARE_HOME%\node\node.exe" %*
+) ELSE (
+  IF "%1"=="--loader" (
+    START "" "%V_SHARE_HOME%\node\node.exe" %*
+  ) ELSE (
+    START "" "%V_SHARE_HOME%\node\node.exe" --loader "file://%V_SHARE_HOME%/intrinsic/@lse/loader/loader.mjs" %*
+  )
+)

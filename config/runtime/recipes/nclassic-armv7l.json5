@@ -1,0 +1,14 @@
+{
+  platform: 'linux',
+  platformType: 'nclassic',
+  targetArch: 'armv7l',
+  installLibCpp: true,
+  installGameControllerDb: false,
+  format: 'hmod',
+  nodeMinimal: true,
+  nodeBinCompress: true,
+  nodeBinStrip: true,
+  lseBinStrip: true,
+  nodeCustomTag: 'pi_xnpm_xintl_xhttp',
+  nodeSrc: 'ci',
+}
