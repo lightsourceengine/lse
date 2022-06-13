@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
 project(nanosvg C)
-
 set(CMAKE_C_STANDARD 99)
 
 from_build_gyp("build.gypi" NANOSVG_SOURCES NANOSVG_INCLUDES)

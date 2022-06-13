@@ -55,6 +55,8 @@
         "repo/src/lzw/ftlzw.c",
         "repo/src/bzip2/ftbzip2.c",
         "repo/src/sdf/sdf.c",
+        "repo/src/svg/svg.c",
+        "repo/src/svg/ftsvg.c",
         "src/z_error.c"
       ],
       "cflags_cc+": [

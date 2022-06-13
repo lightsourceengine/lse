@@ -1,0 +1,6 @@
+add_subdirectory(freetype)
+add_subdirectory(munit)
+add_subdirectory(nanosvg)
+add_subdirectory(stb)
+add_subdirectory(stc)
+add_subdirectory(yoga)
