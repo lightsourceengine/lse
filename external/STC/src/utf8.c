@@ -11,5 +11,5 @@
 * specific language governing permissions and limitations under the License.
 */
 
-#define _i_implement
+#define STC_IMPLEMENTATION
 #include <stc/utf8.h>
