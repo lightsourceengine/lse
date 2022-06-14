@@ -1,0 +1,37 @@
+name: cmake-build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-job:
+    if: github.event_name == 'push' && contains(toJson(github.event.commits), '[ci skip]') == false
+    defaults:
+      run:
+        shell: bash
+    runs-on: macos-10.15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+#      - name: Yarn Cache
+#        uses: egordm/gha-yarn-node-cache@v1
+
+      - name: Setup CMake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          cmake-version: '3.2'
+
+      - name: Configure
+        run: cmake -S . -B cmake-build-debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+
+      - name: Build
+        run: cmake --build cmake-build-debug --parallel
+
+      - name: Test
+        run: $GITHUB_WORKSPACE/cmake-build-debug/test/lse-test
+        working-directory: test
