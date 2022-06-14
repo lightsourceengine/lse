@@ -1,0 +1,22 @@
+{
+  "name": "@internal/react",
+  "version": "0.0.0-private.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bundle": "rimraf dist runtime && rollup -c",
+    "build": "nothing",
+    "build-release": "nothing",
+    "build-debug": "nothing",
+    "clean": "rimraf dist runtime",
+    "lint-js": "standard",
+    "test-js": "nothing"
+  },
+  "standard": {
+    "ignore": [
+      "runtime/",
+      "node_modules/"
+    ],
+    "parser": "@babel/eslint-parser"
+  }
+}

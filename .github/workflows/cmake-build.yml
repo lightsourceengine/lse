@@ -27,11 +27,11 @@ jobs:
           cmake-version: '3.20'
 
       - name: Configure
-        run: cmake -S "$GITHUB_WORKSPACE" -B "$GITHUB_WORKSPACE/cmake-build-debug" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+        run: cmake -S . -B cmake-build-debug -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
 
       - name: Build
-        run: cmake --build "$GITHUB_WORKSPACE/cmake-build-debug" --parallel
+        run: cmake --build cmake-build-debug --parallel
 
       - name: Test
         run: $GITHUB_WORKSPACE/cmake-build-debug/test/lse-test
-        working-directory: ${{github.workspace}}/test
+        working-directory: test

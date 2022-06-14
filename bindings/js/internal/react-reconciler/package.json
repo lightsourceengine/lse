@@ -1,0 +1,25 @@
+{
+  "name": "@internal/react-reconciler",
+  "version": "0.0.0-private.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/reconciler.mjs"
+  },
+  "scripts": {
+    "bundle": "rimraf dist && rollup -c",
+    "build": "nothing",
+    "build-release": "nothing",
+    "build-debug": "nothing",
+    "clean": "rimraf dist",
+    "lint-js": "nothing",
+    "test-js": "nothing"
+  },
+  "standard": {
+    "ignore": [
+      "dist/",
+      "node_modules/"
+    ],
+    "parser": "@babel/eslint-parser"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "@lse/core",
+  "description": "Light Source Engine core application package",
+  "version": "1.0.0-private.0",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightSourceEngine/lse.git"
+  },
+  "homepage": "https://www.lightsourceengine.com",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./dist/lse-core.mjs"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "cross-env": "^7.0.3"
+  },
+  "files": [
+    "dist/",
+    "binding.gyp",
+    "addon",
+    "!addon/CMakeLists.txt"
+  ],
+  "scripts": {
+    "prepublishOnly": "run-s bundle test",
+    "install": "echo 'compile is deferred to build'",
+    "bundle": "rimraf dist runtime && rollup -c",
+    "build": "node_modules/.bin/cross-env-shell node-gyp rebuild --jobs max $npm_config_lse_install_opts",
+    "build-release": "node-gyp build --jobs max --release",
+    "build-debug": "node-gyp build --jobs max --debug",
+    "clean": "rimraf dist runtime build",
+    "lint-js": "standard --env mocha",
+    "test-js": "mocha --reporter spec \"test/**/*.spec.mjs\""
+  },
+  "standard": {
+    "ignore": [
+      "dist/",
+      "runtime/",
+      "addon/",
+      "node_modules/",
+      "build/",
+      "publishing/",
+      "standalone/",
+      "src/Style.mjs"
+    ],
+    "parser": "@babel/eslint-parser",
+    "globals": [ "$LSE_VERSION" ]
+  }
+}

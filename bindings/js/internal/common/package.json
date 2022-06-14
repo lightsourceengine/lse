@@ -1,0 +1,31 @@
+{
+  "name": "@internal/common",
+  "version": "0.0.0-private.0",
+  "private": true,
+  "main": "src/index.mjs",
+  "type": "module",
+  "exports": {
+    "./paths": "./src/paths.mjs",
+    "./plugins": "./src/plugins.mjs",
+    "./version": "./src/version.mjs"
+  },
+  "bin": {
+    "nothing": "bin/nothing.mjs"
+  },
+  "scripts": {
+    "bundle": "nothing",
+    "build": "nothing",
+    "build-release": "nothing",
+    "build-debug": "nothing",
+    "clean": "nothing",
+    "lint-js": "standard",
+    "test-js": "nothing"
+  },
+  "standard": {
+    "ignore": [
+      "dist/",
+      "node_modules/"
+    ],
+    "parser": "@babel/eslint-parser"
+  }
+}

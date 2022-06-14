@@ -8,10 +8,10 @@ include(config/cmake/functions.cmake)
 
 add_subdirectory(external)
 add_subdirectory(lib)
+add_subdirectory(bindings/js/lse/core/addon)
 
 if (BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
 # TODO: add_subdirectory(apps)
-# TODO: add_subdirectory(bindings/js/lse/core/addon)

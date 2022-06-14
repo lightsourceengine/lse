@@ -1,0 +1,45 @@
+{
+  "name": "@lse/loader",
+  "description": "Light Source Engine NodeJS module loader package",
+  "version": "1.0.0-private.0",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightSourceEngine/lse.git"
+  },
+  "homepage": "https://www.lightsourceengine.com",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.13.1"
+  },
+  "files": [
+    "dist/"
+  ],
+  "type": "module",
+  "exports": {
+    "./babel": "./dist/babel.mjs"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0"
+  },
+  "scripts": {
+    "bundle": "rimraf dist runtime && rollup -c",
+    "build": "nothing",
+    "build-release": "nothing",
+    "build-debug": "nothing",
+    "clean": "rimraf dist runtime",
+    "lint-js": "standard",
+    "test-js": "nothing"
+  },
+  "standard": {
+    "ignore": [
+      "dist/",
+      "runtime/",
+      "node_modules/",
+      "publishing/"
+    ],
+    "parser": "@babel/eslint-parser"
+  }
+}
