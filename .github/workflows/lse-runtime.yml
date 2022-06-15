@@ -4,7 +4,6 @@ on: workflow_dispatch
 
 jobs:
   lse-runtime-job:
-    if: github.event_name == 'push' && contains(toJson(github.event.commits), '[ci skip]') == false
     defaults:
       run:
         shell: bash
