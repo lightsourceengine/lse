@@ -18,10 +18,10 @@
 #include "lse_rect.h"
 #include "lse_style.h"
 
+#include <ctype.h>
 #include <freetype/freetype.h>
 #include <freetype/ftadvanc.h>
 #include <freetype/ftglyph.h>
-#include <ctype.h>
 
 struct lse_font {
   lse_font_info info;

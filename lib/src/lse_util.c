@@ -13,8 +13,8 @@
 
 #include "lse_util.h"
 
-#include <Yoga.h>
 #include <math.h>
+#include <Yoga.h>
 
 // TODO: make configurable (?)
 #define LSE_POINT_SCALE_FACTOR 1.f

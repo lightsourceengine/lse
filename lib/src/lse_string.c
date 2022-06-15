@@ -13,15 +13,13 @@
 
 #include "lse_string.h"
 
-#include <lse.h>
 #include "lse_object.h"
+#include <lse.h>
 #include <memory.h>
 #include <stddef.h>
 
 /* optimal memory: based on malloc_usable_size() sequence: 24, 40, 56, ... */
-#define lse_string_opt_mem(cap) ((((offsetof(lse_string_rep_t, str) + (cap) + 8) >> 4) << 4) + 8)
-
-struct lse_string {};
+#define lse_string_opt_mem(cap) ((((offsetof(lse_string, str) + (cap) + 8) >> 4) << 4) + 8)
 
 typedef struct {
   char* str;
@@ -29,16 +27,16 @@ typedef struct {
   char fill;
 } string_info;
 
-typedef struct {
+struct lse_string {
   size_t size;
   char str[];
-} lse_string_rep_t;
+};
 
 static lse_string* kEmptyString = NULL;
 
 static void constructor(lse_object* object, void* arg) {
   string_info* info = (string_info*)arg;
-  lse_string_rep_t* rep = (lse_string_rep_t*)object;
+  lse_string* rep = (lse_string*)object;
 
   if (info->size > 0) {
     if (info->fill) {
@@ -89,29 +87,29 @@ LSE_API lse_string* LSE_CDECL lse_string_new_empty() {
 }
 
 LSE_API const char* LSE_CDECL lse_string_as_cstring(lse_string* str) {
-  return str ? ((lse_string_rep_t*)str)->str : "";
+  return str ? str->str : "";
 }
 
 LSE_API char* LSE_CDECL lse_string_as_data(lse_string* str) {
-  return ((lse_string_rep_t*)str)->str;
+  return str->str;
 }
 
 LSE_API size_t LSE_CDECL lse_string_size(lse_string* str) {
-  return ((lse_string_rep_t*)str)->size;
+  return str->size;
 }
 
 LSE_API bool LSE_CDECL lse_string_empty(lse_string* str) {
-  return !str || ((lse_string_rep_t*)str)->size == 0;
+  return !str || str->size == 0;
 }
 
 LSE_API int32_t LSE_CDECL lse_string_cmp(lse_string* s1, lse_string* s2) {
-  return strcmp(((lse_string_rep_t*)s1)->str, ((lse_string_rep_t*)s2)->str);
+  return strcmp(s1->str, s2->str);
 }
 
 LSE_API int32_t LSE_CDECL lse_string_case_cmp(lse_string* s1, lse_string* s2) {
   int32_t ret;
-  const char* c1 = ((lse_string_rep_t*)s1)->str;
-  const char* c2 = ((lse_string_rep_t*)s2)->str;
+  const char* c1 = s1->str;
+  const char* c2 = s2->str;
 
   while ((ret = tolower(*c1++) - tolower(*c2)) == 0 && *c2++) {
   }

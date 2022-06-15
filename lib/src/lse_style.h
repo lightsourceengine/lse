@@ -13,11 +13,11 @@
 
 #pragma once
 
-#include <lse.h>
 #include "lse_matrix.h"
 #include "lse_rect.h"
 #include "lse_types.h"
 #include "lse_util.h"
+#include <lse.h>
 
 struct lse_style_context {
   float view_width;

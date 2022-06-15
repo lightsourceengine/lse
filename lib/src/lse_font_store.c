@@ -13,14 +13,14 @@
 
 #include "lse_font_store.h"
 
-#include <freetype/freetype.h>
-#include <assert.h>
 #include "lse_env.h"
 #include "lse_font.h"
 #include "lse_memory.h"
 #include "lse_object.h"
 #include "lse_string.h"
 #include "lse_util.h"
+#include <assert.h>
+#include <freetype/freetype.h>
 
 #define i_tag font_table
 #define i_key lse_string_ptr

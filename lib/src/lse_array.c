@@ -107,10 +107,12 @@ static uint8_t* get_data(lse_array* self) {
 // Export type information for lse_object.c:register_types().
 // ////////////////////////////////////////////////////////////////////////////
 
-const lse_type_info k_lse_array_type_info = (lse_type_info){ .type = lse_array_type,
-                                                             .name = "lse_array",
-                                                             .size = 0,
-                                                             .constructor = constructor,
-                                                             .destructor = destructor,
-                                                             .interface = NULL,
-                                                             .interface_type = (lse_none_interface_type) };
+const lse_type_info k_lse_array_type_info = {
+  .type = lse_array_type,
+  .name = "lse_array",
+  .size = 0,
+  .constructor = constructor,
+  .destructor = destructor,
+  .interface = NULL,
+  .interface_type = (lse_none_interface_type),
+};

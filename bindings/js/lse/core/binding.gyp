@@ -36,7 +36,7 @@
       "-flto"
     ],
     "xcode_settings": {
-      "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
+      "GCC_ENABLE_CPP_EXCEPTIONS": "NO",
       "CLANG_CXX_LIBRARY": "libc++",
       "MACOSX_DEPLOYMENT_TARGET": "10.10",
       "CLANG_CXX_LANGUAGE_STANDARD": "c++11",
@@ -52,10 +52,7 @@
     },
     "msvs_settings": {
       "VCCLCompilerTool": {
-        "ExceptionHandling": "1",
-        "AdditionalOptions": [
-          "/std:c++11"
-        ]
+        "ExceptionHandling": "0"
       }
     },
     "conditions": [

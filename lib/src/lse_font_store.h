@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <lse.h>
 #include "lse_types.h"
+#include <lse.h>
 
 #define LSE_FONT_STORE_ASYNC true
 #define LSE_FONT_STORE_SYNC false

@@ -2890,9 +2890,8 @@ NSVGimage* nsvgParse(char* input, const char* units, float dpi)
 
 // Returns true if the file starts with optional whitespace followed by XML tags: <?, <!-- or <svg.
 int nsvgStartsWithXml(FILE *fp) {
-    static const int HEADER_SIZE = 32;
-    char header[HEADER_SIZE];
-    size_t count = fread(header, 1, HEADER_SIZE, fp);
+    char header[32];
+    size_t count = fread(header, 1, sizeof(header) / sizeof(char), fp);
 
     for (size_t i = 0; i < count; i++) {
         char c = header[i];

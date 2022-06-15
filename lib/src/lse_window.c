@@ -13,7 +13,6 @@
 
 #include "lse_window.h"
 
-#include <string.h>
 #include "lse_env.h"
 #include "lse_graphics.h"
 #include "lse_graphics_container.h"
@@ -23,6 +22,7 @@
 #include "lse_string.h"
 #include "lse_style.h"
 #include "lse_video.h"
+#include <string.h>
 
 struct lse_window {
   lse_env* env;

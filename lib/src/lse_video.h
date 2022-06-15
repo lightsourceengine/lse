@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <lse.h>
 #include "lse_types.h"
+#include <lse.h>
 
 //
 // vtable

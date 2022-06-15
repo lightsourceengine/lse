@@ -42,9 +42,14 @@ void* lse_object_get_interface(lse_object* object);
 uint8_t lse_object_get_interface_type(lse_object* object);
 
 #define LSE_TYPE_INFO(ID, CLASS, INTERFACE_ID, INTERFACE)                                                              \
-  const lse_type_info k_##CLASS##_type_info = (lse_type_info) {                                                        \
-    .type = (ID), .name = #CLASS, .size = sizeof(struct CLASS), .constructor = constructor, .destructor = destructor,  \
-    .interface = (INTERFACE), .interface_type = (INTERFACE_ID)                                                         \
+  const lse_type_info k_##CLASS##_type_info = {                                                                        \
+    .type = (ID),                                                                                                      \
+    .name = #CLASS,                                                                                                    \
+    .size = sizeof(struct CLASS),                                                                                      \
+    .constructor = constructor,                                                                                        \
+    .destructor = destructor,                                                                                          \
+    .interface = (INTERFACE),                                                                                          \
+    .interface_type = (INTERFACE_ID),                                                                                  \
   }
 
 #define lse_new(CLASS, ARG) (CLASS*)lse_object_new(CLASS##_type, (ARG))

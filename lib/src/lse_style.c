@@ -21,12 +21,12 @@
 #include "lse_style_meta.h"
 #include "lse_text.h"
 #include "lse_util.h"
-#include <Yoga.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Yoga.h>
 
 typedef struct {
   union {
@@ -250,8 +250,8 @@ static const lse_style_value k_undefined_value = { .unit = LSE_STYLE_UNIT_UNDEFI
 static lse_style* k_empty_style = NULL;
 #define LSE_PI_F (float)3.141592653589793238462643383279502884L
 static const float k_deg_to_rad = (LSE_PI_F) / 180.f;
-static const float k_grad_to_rad = (LSE_PI_F)/ 200.f;
-static const float k_turn_to_rad = (LSE_PI_F) * 2.f;
+static const float k_grad_to_rad = (LSE_PI_F) / 200.f;
+static const float k_turn_to_rad = (LSE_PI_F)*2.f;
 
 static bool parse_color_hex(const char* str, uint32_t* color);
 static void init_color_keyword_table();

@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include <lse.h>
 #include "lse_sdl.h"
 #include "lse_types.h"
+#include <lse.h>
 #include <stc/forward.h>
 
 forward_cvec(cvec_gamepads, lse_gamepad_ptr);

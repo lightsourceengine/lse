@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include <lse.h>
 #include "lse_color.h"
 #include "lse_types.h"
+#include <lse.h>
 
 typedef void (*lse_image_pixels_free)(lse_color*);
 

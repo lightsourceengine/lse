@@ -14,8 +14,8 @@
 #include "lse_sdl.h"
 
 #include "lse_cfg.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #if defined(_WIN32)
@@ -24,7 +24,7 @@
 #define lse_dlopen(NAME) LoadLibrary((NAME))
 #define lse_dlclose(HANDLE) FreeLibrary((HMODULE)(HANDLE))
 #define lse_dlerror() GetLastError()
-#define lse_dlsym(HANDLE, SYMBOL) GetProcAddress((HMODULE)(HANDLE), (SYMBOL))
+#define lse_dlsym(HANDLE, SYMBOL) (void*)GetProcAddress((HMODULE)(HANDLE), (SYMBOL))
 #else
 #include <dlfcn.h>
 
@@ -145,7 +145,7 @@ lse_status lse_sdl_load(lse_sdl* sdl) {
   handle = sdl->lib.handle = lse_dlopen(path);
 
   if (!handle) {
-    LSE_LOG_ERROR("dlopen: %s", dlerror());
+    LSE_LOG_ERROR("dlopen: %s", lse_dlerror());
     return LSE_ERR_SDL_UNAVAILABLE;
   }
 

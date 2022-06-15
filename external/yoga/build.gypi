@@ -25,7 +25,7 @@
       ],
       "defines": [
         "YG_ENABLE_NODE_LAYOUT_EVENT=1",
-        "YOGA_EXPORT=__attribute__((visibility(\"hidden\")))"
+        "YOGA_EXPORT="
       ],
       "direct_dependent_settings": {
         "include_dirs": [
