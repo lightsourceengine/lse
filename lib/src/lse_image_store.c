@@ -20,9 +20,9 @@
 #include "lse_object.h"
 #include "lse_string.h"
 #include "lse_util.h"
-#include "nanosvg.h"
-#include "nanosvgrast.h"
-#include "stb_image.h"
+#include <nanosvg.h>
+#include <nanosvgrast.h>
+#include <stb_image.h>
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>

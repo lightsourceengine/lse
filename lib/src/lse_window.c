@@ -13,6 +13,7 @@
 
 #include "lse_window.h"
 
+#include <string.h>
 #include "lse_env.h"
 #include "lse_graphics.h"
 #include "lse_graphics_container.h"

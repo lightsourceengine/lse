@@ -248,10 +248,10 @@ static cmap_color_keyword_table k_color_keyword_table = _cmap_inits;
 static cset_properties k_defined_properties = _cmap_inits;
 static const lse_style_value k_undefined_value = { .unit = LSE_STYLE_UNIT_UNDEFINED, .value = LSE_UNDEFINED };
 static lse_style* k_empty_style = NULL;
-static const float k_pi_f = (float)3.141592653589793238462643383279502884L;
-static const float k_deg_to_rad = k_pi_f / 180.f;
-static const float k_grad_to_rad = k_pi_f / 200.f;
-static const float k_turn_to_rad = k_pi_f * 2.f;
+#define LSE_PI_F (float)3.141592653589793238462643383279502884L
+static const float k_deg_to_rad = (LSE_PI_F) / 180.f;
+static const float k_grad_to_rad = (LSE_PI_F)/ 200.f;
+static const float k_turn_to_rad = (LSE_PI_F) * 2.f;
 
 static bool parse_color_hex(const char* str, uint32_t* color);
 static void init_color_keyword_table();

@@ -14,6 +14,7 @@
 #pragma once
 
 #include <ctype.h>
+#include <stdlib.h>
 
 static inline int c_strncasecmp(const char* s1, const char* s2, size_t nmax) {
   int ret = 0;
