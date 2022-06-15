@@ -22,10 +22,14 @@
 #include "lse_util.h"
 #include <assert.h>
 #include <math.h>
+#include <stb_image.h>
+
+// stdio must come before nanosvg
+// clang-format off
+#include <stdio.h>
 #include <nanosvg.h>
 #include <nanosvgrast.h>
-#include <stb_image.h>
-#include <stdio.h>
+// clang-format on
 
 static image_resource image_resource_init(lse_string* uri);
 static void image_resource_drop(image_resource* resource);
