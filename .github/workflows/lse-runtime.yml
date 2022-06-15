@@ -7,6 +7,7 @@ jobs:
     defaults:
       run:
         shell: bash
+
     strategy:
       fail-fast: false
       matrix:
@@ -14,11 +15,11 @@ jobs:
           - host: macos-10.15
             recipe: recipe://macos-x64
             targetArch: x64
-            gcc: @
+            gcc: default
           - host: ubuntu-18.04
             recipe: recipe://linux-x64
             targetArch: x64
-            gcc: @
+            gcc: default
           - host: ubuntu-18.04
             recipe: recipe://pi-armv6l
             targetArch: armv6l
@@ -29,6 +30,7 @@ jobs:
             gcc: 8.3.0
 
     runs-on: ${{ matrix.host }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,7 +43,7 @@ jobs:
           node-version: 16.15.0
 
       - name: Install GCC Toolchain
-        if: startsWith(matrix.host, 'ubuntu') && matrix.gcc != '@'
+        if: startsWith(matrix.host, 'ubuntu') && matrix.gcc != 'default'
         uses: .github/actions/gcc-toolchain
         with:
           arch: ${{ matrix.targetArch }}
