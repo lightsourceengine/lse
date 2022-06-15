@@ -6,6 +6,9 @@
       "include_dirs": [
         "repo-local/yoga"
       ],
+      "lse:source_dirs": [
+      ],
+      "lse:license": "repo-local/LICENSE",
       "sources": [
         "repo-local/yoga/event/event.cpp",
         "repo-local/yoga/internal/experiments.cpp",

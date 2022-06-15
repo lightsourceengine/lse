@@ -6,6 +6,7 @@
       "include_dirs": [
         "repo/include"
       ],
+      "lse:license": "repo/LICENSE",
       "sources": [
         "repo/src/threads.c",
         "src/utf8.c"

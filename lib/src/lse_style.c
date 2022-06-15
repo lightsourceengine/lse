@@ -242,7 +242,7 @@ static css_color_value kColorKeywords[] = {
   { "yellow", LSE_MAKE_COLOR(0xFF, 0xFF, 0x00, 0xFF) },
   { "yellowgreen", LSE_MAKE_COLOR(0x9A, 0xCD, 0x32, 0xFF) },
   { "rebeccapurple", LSE_MAKE_COLOR(0x66, 0x33, 0x99, 0xFF) },
-  { "transparent", 0 },
+  { "transparent", { 0 } },
 };
 static cmap_color_keyword_table k_color_keyword_table = _cmap_inits;
 static cset_properties k_defined_properties = _cmap_inits;

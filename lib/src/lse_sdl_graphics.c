@@ -209,7 +209,7 @@ ERROR:
 // @override
 static void destroy(lse_graphics* graphics) {
   lse_sdl_graphics* self = (lse_sdl_graphics*)graphics;
-  lse_sdl* sdl;
+  lse_sdl* sdl = lse_get_sdl_from_base(self);
 
   if (lse_graphics_is_destroyed(graphics)) {
     return;
@@ -221,8 +221,6 @@ static void destroy(lse_graphics* graphics) {
   cmap_image_cache_clear(&self->image_cache);
 
   if (self->renderer) {
-    sdl = lse_get_sdl_from_base(self);
-
     sdl->SDL_DestroyTexture(self->fill_texture);
     self->fill_texture = NULL;
 

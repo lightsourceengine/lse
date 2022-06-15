@@ -5,9 +5,6 @@
   "type": "module",
   "scripts": {
     "bundle": "rimraf dist runtime && rollup -c",
-    "build": "nothing",
-    "build-release": "nothing",
-    "build-debug": "nothing",
     "clean": "rimraf dist runtime",
     "lint-js": "standard",
     "test-js": "nothing"

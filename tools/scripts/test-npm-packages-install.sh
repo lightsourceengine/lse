@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # test-npm-packages-install.sh
@@ -6,9 +6,9 @@ set -e
 # Tests npm packages created by create-npm-packages.sh can be installed and imported by code.
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
-SOURCE_ROOT="${SCRIPT_DIR}/.."
+SOURCE_ROOT="${SCRIPT_DIR}/../.."
 TEST_DIR="${SOURCE_ROOT}/build/npm/test"
-GET_VERSION_SCRIPT="JSON.parse(require('fs').readFileSync('${SOURCE_ROOT}/publishing/version.json', 'utf8')).version"
+GET_VERSION_SCRIPT="JSON.parse(require('fs').readFileSync('${SOURCE_ROOT}/config/publishing/version.json', 'utf8')).version"
 # paths relative to TEST_DIR to avoid absolute path issues on windows
 PUBLISHABLE_DIR="../publishable"
 
@@ -27,8 +27,6 @@ else
 fi
 
 # Install all packages to the working directory
-
-export npm_config_lse_install_opts="--release"
 
 rm -rf package*.json node_modules
 

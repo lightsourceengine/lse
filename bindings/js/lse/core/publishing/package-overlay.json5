@@ -3,6 +3,8 @@
   files: "!",
   standard: "!",
   scripts: {
-    install: "cross-env-shell node-gyp rebuild --jobs max $npm_config_lse_install_opts"
+    install: "node-gyp rebuild --jobs max --release",
+    build: "node-gyp build",
+    rebuild: "node-gyp rebuild"
   }
 }

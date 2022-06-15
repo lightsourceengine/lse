@@ -6,8 +6,7 @@
       "include_dirs": [
         "include",
         "src",
-        "../../external/SDL2/repo/include",
-        "../../external/STC/repo/include"
+        "../external/SDL2/repo/include"
       ],
       "dependencies": [
         "freetype",
@@ -69,8 +68,7 @@
         "include_dirs": [
           "include",
           "src",
-          "../../external/SDL2/repo/include",
-          "../../external/STC/repo/include"
+          "../external/SDL2/repo/include"
         ]
       }
     }

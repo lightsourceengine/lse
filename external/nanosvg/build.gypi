@@ -3,6 +3,7 @@
     {
       "target_name": "nanosvg",
       "type": "static_library",
+      "lse:license": "repo-local/LICENSE.txt",
       "include_dirs": [
         "include",
         "repo-local/src"

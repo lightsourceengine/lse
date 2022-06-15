@@ -58,9 +58,9 @@ node_modules/
 jspm_packages/
 build/
 dist/
-js/internal/*/runtime
-js/lse/*/runtime
-js/sandbox/runtime
+bindings/js/internal/*/runtime
+bindings/js/lse/*/runtime
+bindings/js/lse/core/external
 
 # TypeScript v1 declaration files
 typings/

@@ -14,9 +14,6 @@
   },
   "scripts": {
     "bundle": "nothing",
-    "build": "nothing",
-    "build-release": "nothing",
-    "build-debug": "nothing",
     "clean": "nothing",
     "lint-js": "standard",
     "test-js": "nothing"

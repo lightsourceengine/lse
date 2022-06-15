@@ -3,6 +3,7 @@
     {
       "target_name": "freetype",
       "type": "static_library",
+      "lse:license": [ "repo/docs/FTL.TXT", "repo/LICENSE.TXT", "NOTICE" ],
       "include_dirs": [
         "repo/include"
       ],
@@ -58,6 +59,10 @@
         "repo/src/svg/svg.c",
         "repo/src/svg/ftsvg.c",
         "src/z_error.c"
+      ],
+      "lse:source_dirs": [
+        "src",
+        "repo/src"
       ],
       "cflags_cc+": [
         "-w"

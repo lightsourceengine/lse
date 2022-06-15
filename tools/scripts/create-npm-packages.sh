@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # create-npm-packages.sh
@@ -25,13 +25,15 @@ _popd () {
 }
 
 get_version() {
-  $(node -p "JSON.parse(require('fs').readFileSync('$1', 'utf8')).version")
+  node -p "require('fs-extra').readJsonSync('$1').version"
 }
 
 create_npm_package() {
   TARGET_DIR="${SOURCE_ROOT}/build/npm/$1"
-  SOURCE_DIR="${SOURCE_ROOT}/lse-package/$1"
-  
+  SOURCE_DIR="${SOURCE_ROOT}/bindings/js/lse/$1"
+
+  # first pass: use npm pack to create a package. it's missing stuff, so unpack it to the
+  # package directory and apply additions
   mkdir -p "${TARGET_DIR}"
   VERSION=$(get_version "${SOURCE_DIR}/package.json")
 
@@ -41,6 +43,7 @@ create_npm_package() {
   rm "lse-${1}-${VERSION}.tgz"
   _popd
 
+  # apply the overlay to the package.json
   OVERLAY="${SOURCE_DIR}/publishing/package-overlay.json5"
 
   if [ -f "${OVERLAY}" ]; then
@@ -50,79 +53,43 @@ create_npm_package() {
       "${TARGET_DIR}/package/package.json"
   fi
 
+  # apply patches
   PATCH_DIR="${SOURCE_DIR}/publishing/patch"
 
   if [ -d "${PATCH_DIR}" ]; then
     cp -rf "${PATCH_DIR}/." "${TARGET_DIR}/package"
   fi
 
-  cp "${SOURCE_ROOT}/LICENSE" "${SOURCE_ROOT}/NOTICE" "${TARGET_DIR}/package"
+  # add LICENSE
+  cp "${SOURCE_ROOT}/LICENSE" "${TARGET_DIR}/package"
 
-  # TODO: find a better home for this packaging step
-  if [ "$1" = "core" ]; then
-    source_to_target() {
-      S="${SOURCE_ROOT}/${1}"
-      T="${TARGET_DIR}/package/addon/${2}"
+  # npm pack should clear extraneous files, but just in case..
+  find "${TARGET_DIR}/package" -name ".DS_Store" -depth -exec rm {} \;
 
-      mkdir -p "${T}"
-      cp -r "${S}" "${T}"
-    }
-
-    # edit paths in binding.gyp to include libs in package
-    cat "${SOURCE_ROOT}/lse-package/core/binding.gyp" \
-      | node -e "import('get-stdin').then(g => g.default()).then(b => console.log(b.replaceAll('../../external', 'addon/external').replaceAll('../../lse-lib', 'addon/lse')))" \
-      > "${TARGET_DIR}/package/binding.gyp"
-
-    # lse-lib
-    source_to_target "lse-lib/inc" "lse"
-    source_to_target "lse-lib/src" "lse"
-    source_to_target "lse-lib/build.gypi" "lse"
-    # freetype
-    source_to_target "external/freetype/repo/include" "external/freetype/repo"
-    source_to_target "external/freetype/repo/src" "external/freetype/repo"
-    source_to_target "external/freetype/repo/LICENSE.TXT" "external/freetype/repo"
-    source_to_target "external/freetype/src" "external/freetype"
-    source_to_target "external/freetype/build.gypi" "external/freetype"
-    # nanosvg
-    source_to_target "external/nanosvg" "external"
-    # SDL2
-    source_to_target "external/SDL2" "external"
-    # stb
-    source_to_target "external/stb/src" "external/stb"
-    source_to_target "external/stb/build.gypi" "external/stb"
-    source_to_target "external/stb/repo/stb_image.h" "external/stb/repo"
-    # STC
-    source_to_target "external/STC/repo/include" "external/STC/repo"
-    source_to_target "external/STC/repo/src" "external/STC/repo"
-    source_to_target "external/STC/repo/LICENSE" "external/STC/repo"
-    source_to_target "external/STC/src/threads.c" "external/STC/src"
-    source_to_target "external/STC/build.gypi" "external/STC"
-    # yoga
-    source_to_target "external/yoga" "external"
-
-    find "${TARGET_DIR}/package" -name “CMakeLists.txt” -depth -exec rm {} \;
-  fi
-
-  find "${TARGET_DIR}/package" -name “.DS_Store” -depth -exec rm {} \;
-
+  # second pass: now the package is ready for shipping
   _pushd "${TARGET_DIR}/package"
   tar -czf "${PUBLISHABLE_DIR}/lse-${1}-${PUBLISHING_VERSION}.tgz" .
   _popd
+
+  # clean up
+  rm -r "${TARGET_DIR}"
 }
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
-SOURCE_ROOT="${SCRIPT_DIR}/.."
+SOURCE_ROOT="${SCRIPT_DIR}/../.."
 PUBLISHABLE_DIR="${SOURCE_ROOT}/build/npm/publishable"
-PUBLISHING_VERSION=$(get_version "${SOURCE_ROOT}/publishing/version.json")
+PUBLISHING_VERSION=$(get_version "${SOURCE_ROOT}/config/publishing/version.json")
 
 _pushd "${SOURCE_ROOT}"
 
 export npm_config_lse_install_opts="--release"
 
+yarn --cwd "${SOURCE_ROOT}" run sync-core-addon-source
+
 if [ "$1" = "--skip-yarn-build" ]; then
   yarn run bundle
 else
-  yarn run build --ignore-engines
+  yarn run rebuild --jobs max --release
 fi
 
 _popd
@@ -134,5 +101,3 @@ create_npm_package "core"
 create_npm_package "style"
 create_npm_package "react"
 create_npm_package "loader"
-
-rm -r "${SOURCE_ROOT}/build/npm/core" "${SOURCE_ROOT}/build/npm/style" "${SOURCE_ROOT}/build/npm/react" "${SOURCE_ROOT}/build/npm/loader"

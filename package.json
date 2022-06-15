@@ -23,13 +23,12 @@
   "scripts": {
     "bundle": "yarn workspaces run bundle",
     "postinstall": "yarn workspaces run bundle",
-    "build": "yarn workspaces run build",
-    "build-release": "yarn workspaces run build-release",
-    "build-debug": "yarn workspaces run build-debug",
+    "build": "yarn --cwd bindings/js/lse/core run build",
+    "rebuild": "yarn --cwd bindings/js/lse/core run rebuild",
     "clean": "rimraf build && yarn workspaces run clean",
     "lint": "yarn run lint-js && lint-cc",
     "lint-js": "yarn workspaces run lint-js",
-    "test": "yarn run test-js && test-cc",
+    "test": "yarn run test-js && yarn run test-cc",
     "test-js": "yarn workspaces run test-js",
     "test-cc": "echo 'native tests!'",
     "gen": "gen-style && gen-bindings && gen-test"

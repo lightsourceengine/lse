@@ -1,11 +1,11 @@
 {
   "includes": [
-    "../../external/stb/build.gypi",
-    "../../external/stc/build.gypi",
-    "../../external/freetype/build.gypi",
-    "../../external/nanosvg/build.gypi",
-    "../../external/yoga/build.gypi",
-    "../../native/lib/build.gypi",
+    "external/freetype/build.gypi",
+    "external/nanosvg/build.gypi",
+    "external/stb/build.gypi",
+    "external/STC/build.gypi",
+    "external/yoga/build.gypi",
+    "external/lse/build.gypi",
     "addon/build.gypi"
   ],
   "target_defaults": {

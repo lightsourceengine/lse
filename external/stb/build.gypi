@@ -3,6 +3,7 @@
     {
       "target_name": "stb_image",
       "type": "static_library",
+      "lse:license": [ "LICENSE" ],
       "include_dirs": [
         "repo"
       ],

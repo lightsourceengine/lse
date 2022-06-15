@@ -11,10 +11,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-#include <lse_color.h>
-#include <lse_util.h>
 #include <lse.h>
+#include <lse_color.h>
 #include <lse_test.h>
+#include <lse_util.h>
 #include <stc/ccommon.h>
 
 struct lse_test_fixture {

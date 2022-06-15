@@ -44,6 +44,3 @@ struct image_resource {
   int32_t usages;
   lse_thread_pool_task* task;
 };
-
-static image_resource image_resource_init(lse_string* uri);
-static void image_resource_drop(image_resource* resource);

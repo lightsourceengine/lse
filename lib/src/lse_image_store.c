@@ -27,6 +27,9 @@
 #include <math.h>
 #include <stdio.h>
 
+static image_resource image_resource_init(lse_string* uri);
+static void image_resource_drop(image_resource* resource);
+
 #define i_tag images
 #define i_key lse_string_ptr
 #define i_keyraw crawstr
