@@ -206,7 +206,7 @@ const downloadFile = async (url, options = {}) => {
   await ensureDir(cache)
 
   const streamPipeline = promisify(pipeline)
-  const response = await fetch(url)
+  const response = await fetch(url, { redirect: 'follow' })
 
   assert(response.ok, `unexpected response ${response.statusText}`)
 
@@ -361,7 +361,7 @@ export const buildOptions = (args, recipe) => {
         break
       case Platform.linux:
         if (options.platformType === PlatformType.pi) {
-          runtime = join(CI_URL, `SDL2-${options.sdlRuntime}-${options.targetArch}-${options.platformType}.tgz`)
+          runtime = `${CI_URL}SDL2-${options.sdlRuntime}-${options.targetArch}-${options.platformType}.tgz`
         }
         break
       default:
@@ -599,10 +599,11 @@ const installSDLFramework = async (ctx, name, runtime) => {
 
 const installSDLForPi = async (ctx, name, runtime) => {
   const temp = await emptyTempDir('lse-sdl-pi-tgz')
-  const so = join(temp, basename(runtime, '.tgz'), 'libSDL2.so')
+  const soName = 'libSDL2.so'
+  const soPath = join(temp, basename(runtime, '.tgz'), soName)
 
   await extract(runtime, temp, ctx.options)
-  await copy(so, ctx.staging.lib)
+  await copy(soPath, join(ctx.staging.lib, soName))
 }
 
 export const installIntrinsicModules = async (ctx) => {
