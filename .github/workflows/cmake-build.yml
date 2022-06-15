@@ -11,15 +11,15 @@ jobs:
     defaults:
       run:
         shell: bash
-    runs-on: macos-10.15
+    strategy:
+      matrix:
+        os: [ windows-2019, ubuntu-18.04, macos-10.15 ]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
-
-#      - name: Yarn Cache
-#        uses: egordm/gha-yarn-node-cache@v1
 
       - name: Setup CMake
         uses: jwlawson/actions-setup-cmake@v1.12
