@@ -51,5 +51,5 @@ Object.entries(styleMetadata.properties).forEach(([key, prop]) => {
 await Promise.all([
   Template('Style.mjs', resolveLsePackagePath('core', 'src'), styleMetadata),
   Template('lse_style_meta.c', resolveNativePath('src'), styleMetadata),
-  Template('style-enums', resolveNativePath('inc', 'lse.h'), styleMetadata)
+  Template('style-enums', resolveNativePath('include', 'lse.h'), styleMetadata)
 ])

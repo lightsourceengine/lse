@@ -14,14 +14,16 @@
  */
 
 import { Template } from '../lib/Template.mjs'
-import { resolveNativePath } from '../lib/paths.mjs'
+import { PROJECT_ROOT } from '@internal/common/paths'
 import { readdirSync, readFileSync } from 'fs'
+import { join } from 'path'
 
+const testPath = (...args) => join(PROJECT_ROOT, 'test', ...args)
 const tests = []
-const files = readdirSync(resolveNativePath('test', 'src')).filter(name => name.match(/^test_\w+\.c$/))
+const files = readdirSync(testPath('src')).filter(name => name.match(/^test_\w+\.c$/))
 
 for (const file of files) {
-  const contents = readFileSync(resolveNativePath('test', 'src', file), 'utf8')
+  const contents = readFileSync(testPath('src', file), 'utf8')
   const test = {
     testCases: []
   }
@@ -52,4 +54,4 @@ for (const file of files) {
   tests.push(test)
 }
 
-await Template('lse_test_runner_suite.c', resolveNativePath('test', 'src', 'runner'), { tests })
+await Template('lse_test_runner_suite.c', testPath('src', 'runner'), { tests })
