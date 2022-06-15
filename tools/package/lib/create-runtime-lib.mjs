@@ -516,7 +516,7 @@ export const installNode = async (ctx) => {
   }
 
   const url = `${nodeSrc}${version}/${tag}${ext}`
-  const temp = await emptyTempDir('scratch')
+  const temp = await emptyTempDir('lse-node-scratch')
 
   // extract to a temporary directory
   await extract(url, temp, nodeMinimal ? { files, ...ctx.options } : ctx.options)
@@ -525,7 +525,21 @@ export const installNode = async (ctx) => {
   await ensureDir(ctx.staging.node)
 
   // move from temp to the node folder in staging
-  await rename(join(temp, tag), ctx.staging.node)
+  await renameOrCopy(join(temp, tag), ctx.staging.node)
+}
+
+// if rename fails due to cross partition error, fall back to copy. on some linux systems, /tmp is a separate partition
+const renameOrCopy = async (from, to) => {
+  try {
+    await rename(from, to)
+  } catch (e) {
+    if (e.code === 'EXDEV') {
+      await ensureDir(to)
+      await copy(from, to)
+    } else {
+      throw e
+    }
+  }
 }
 
 export const installSDL = async (ctx) => {
@@ -555,7 +569,7 @@ export const installSDL = async (ctx) => {
 }
 
 const installSDLWindows = async (ctx, name, runtime) => {
-  const temp = await emptyTempDir('sdl-windows-zip')
+  const temp = await emptyTempDir('lse-sdl-windows-zip')
   const lib = `${name}.dll`
   const tempLib = join(temp, lib)
 
@@ -572,7 +586,7 @@ const installSDLFramework = async (ctx, name, runtime) => {
     await ensureDir(frameworkPath)
     await copy(runtime, frameworkPath)
   } else if (isDmg(runtime)) {
-    const temp = await emptyTempDir('sdl-macos-dmg')
+    const temp = await emptyTempDir('lse-sdl-macos-dmg')
     const tempFramework = join(temp, framework)
 
     await extract(runtime, temp, ctx.options)
@@ -584,7 +598,7 @@ const installSDLFramework = async (ctx, name, runtime) => {
 }
 
 const installSDLForPi = async (ctx, name, runtime) => {
-  const temp = await emptyTempDir('sdl-pi-tgz')
+  const temp = await emptyTempDir('lse-sdl-pi-tgz')
   const so = join(temp, basename(runtime, '.tgz'), 'libSDL2.so')
 
   await extract(runtime, temp, ctx.options)

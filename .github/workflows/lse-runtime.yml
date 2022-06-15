@@ -1,0 +1,49 @@
+name: lse-runtime
+
+on: workflow_dispatch
+
+jobs:
+  lse-runtime-job:
+    if: github.event_name == 'push' && contains(toJson(github.event.commits), '[ci skip]') == false
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-10.15
+            recipe: recipe://macos-x64
+          - os: ubuntu-18.04
+            recipe: recipe://linux-x64
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.15.0
+
+      - name: Yarn Cache
+        uses: egordm/gha-yarn-node-cache@v1
+
+      - name: yarn run create-runtime
+        run: |
+          yarn
+          yarn run create-runtime --recipe ${{ matrix.recipe }}
+
+      - name: Upload Runtime
+        uses: actions/upload-artifact@v2
+        with:
+          name: lse-runtime-artifact
+          if-no-files-found: error
+          retention-days: 3
+          path: |
+            build/*.tgz
+            build/*.zip
+            build/*.hmod

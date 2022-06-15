@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-job:
+  lse-build-cmake-job:
     if: github.event_name == 'push' && contains(toJson(github.event.commits), '[ci skip]') == false
     defaults:
       run:

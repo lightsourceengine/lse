@@ -1,16 +1,15 @@
-name: npm-packages
+name: lse-npm
 
 on: workflow_dispatch
 
 jobs:
-  npm-packages-job:
+  lse-npm-job:
     defaults:
       run:
         shell: bash
     strategy:
       matrix:
         os: [ macos-10.15 ]
-        node: [ 16.15.0 ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -21,7 +20,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 16.15.0
 
       - name: Yarn Cache
         uses: egordm/gha-yarn-node-cache@v1
@@ -35,10 +34,10 @@ jobs:
       - name: Test Package Install
         run: ./tools/scripts/test-npm-packages-install.sh
 
-      - name: Upload NPM Packages
+      - name: Upload NPM Package
         uses: actions/upload-artifact@v2
         with:
-          name: npm-packages-artifact
+          name: lse-npm-artifact
           if-no-files-found: error
           retention-days: 3
           path: build/npm/publishable/*.tgz
