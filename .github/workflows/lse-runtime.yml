@@ -44,14 +44,14 @@ jobs:
 
       - name: Install GCC Toolchain
         if: startsWith(matrix.host, 'ubuntu') && matrix.gcc != 'default'
-        uses: .github/actions/gcc-toolchain
+        uses: ./.github/actions/gcc-toolchain
         with:
           arch: ${{ matrix.targetArch }}
           version: ${{ matrix.gcc }}
 
       - name: Install UPX
         if: startsWith(matrix.host, 'ubuntu') || startsWith(matrix.host, 'macos')
-        uses: .github/actions/install-upx
+        uses: ./.github/actions/install-upx
 
       - name: Yarn Cache
         uses: egordm/gha-yarn-node-cache@v1
