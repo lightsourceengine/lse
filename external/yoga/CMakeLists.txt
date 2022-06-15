@@ -19,7 +19,7 @@ target_compile_definitions(
     yoga
     PUBLIC
     YG_ENABLE_NODE_LAYOUT_EVENT=1
-    YOGA_EXPORT
+    YOGA_EXPORT=
 )
 
 install(TARGETS yoga)
