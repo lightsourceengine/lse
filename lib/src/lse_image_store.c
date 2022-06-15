@@ -20,12 +20,12 @@
 #include "lse_object.h"
 #include "lse_string.h"
 #include "lse_util.h"
-#include <nanosvg.h>
-#include <nanosvgrast.h>
-#include <stb_image.h>
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+#include <nanosvg.h>
+#include <nanosvgrast.h>
+#include <stb_image.h>
 
 static image_resource image_resource_init(lse_string* uri);
 static void image_resource_drop(image_resource* resource);
