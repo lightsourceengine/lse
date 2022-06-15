@@ -16,6 +16,7 @@
 #include "lse_cfg.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #if defined(_WIN32)
 #include <windows.h>
