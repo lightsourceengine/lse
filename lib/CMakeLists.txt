@@ -22,3 +22,5 @@ target_include_directories(
     "${CMAKE_SOURCE_DIR}/external/yoga/repo-local/yoga"
     src
 )
+
+install(TARGETS lse)

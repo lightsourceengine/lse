@@ -42,4 +42,5 @@ target_link_libraries(
     stb_image
     stc
     yoga
+    ${CMAKE_DL_LIBS}
 )
