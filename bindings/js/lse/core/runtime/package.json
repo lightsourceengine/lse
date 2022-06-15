@@ -1,8 +1,0 @@
-{
-  "name": "@lse/core",
-  "type": "module",
-  "version": "2.0.0",
-  "exports": {
-    ".": "./lse-core.mjs"
-  }
-}

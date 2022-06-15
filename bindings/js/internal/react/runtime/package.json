@@ -1,9 +1,0 @@
-{
-  "name": "react",
-  "type": "module",
-  "version": "18.1.0",
-  "exports": {
-    ".": "./react.mjs",
-    "./jsx-runtime": "./react-jsx-runtime.mjs"
-  }
-}
