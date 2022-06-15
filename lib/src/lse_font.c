@@ -18,9 +18,9 @@
 #include "lse_rect.h"
 #include "lse_style.h"
 
-#include "freetype/freetype.h"
-#include "freetype/ftadvanc.h"
-#include "freetype/ftglyph.h"
+#include <freetype/freetype.h>
+#include <freetype/ftadvanc.h>
+#include <freetype/ftglyph.h>
 #include <ctype.h>
 
 struct lse_font {

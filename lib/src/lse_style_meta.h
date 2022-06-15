@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 
 #define LSE_STYLE_AUTO "auto"
 

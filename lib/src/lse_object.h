@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 #include <stddef.h>
 
 typedef void (*lse_object_constructor)(lse_object*, void*);

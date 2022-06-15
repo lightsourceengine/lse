@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 
 #define i_forward
 #define i_subject lse_image

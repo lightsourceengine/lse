@@ -13,11 +13,11 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 #include "lse_rect.h"
 #include "lse_types.h"
 #include "lse_util.h"
-#include "Yoga.h"
+#include <Yoga.h>
 
 //
 // vtable

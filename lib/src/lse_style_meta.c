@@ -19,7 +19,7 @@
 #include "lse_style_meta.h"
 
 #include <stdbool.h>
-#include "stc/ccommon.h"
+#include <stc/ccommon.h>
 
 #include "lse_string.h"
 

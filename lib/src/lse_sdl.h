@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 #include <SDL.h>
 
 // 255.255.255 + null terminator

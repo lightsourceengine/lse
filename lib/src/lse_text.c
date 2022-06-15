@@ -15,7 +15,7 @@
 
 #include "lse_font.h"
 #include "lse_util.h"
-#include "stc/utf8.h"
+#include <stc/utf8.h>
 #include <ctype.h>
 
 void lse_text_get_whitespace(const char* utf8, lse_text_whitespace* out) {

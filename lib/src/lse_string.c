@@ -13,7 +13,7 @@
 
 #include "lse_string.h"
 
-#include "lse.h"
+#include <lse.h>
 #include "lse_object.h"
 #include <memory.h>
 #include <stddef.h>

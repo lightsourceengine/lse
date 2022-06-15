@@ -14,7 +14,7 @@
 #include "lse_video.h"
 
 #include "lse_object.h"
-#include "stc/ccommon.h"
+#include <stc/ccommon.h>
 #include <stdio.h>
 
 lse_string* lse_video_create_stub_mapping(lse_video* video, const char* uuid) {

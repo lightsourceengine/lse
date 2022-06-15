@@ -13,7 +13,7 @@
 
 #include "lse_util.h"
 
-#include "Yoga.h"
+#include <Yoga.h>
 #include <math.h>
 
 // TODO: make configurable (?)

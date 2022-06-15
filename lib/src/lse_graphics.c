@@ -20,7 +20,7 @@
 #define i_val lse_graphics_state
 #define i_tag graphics_state
 #define i_opt c_no_clone | c_no_compare | c_is_fwd
-#include "stc/cstack.h"
+#include <stc/cstack.h>
 
 static const lse_graphics_state k_empty_state = {
   .clip_rect = {

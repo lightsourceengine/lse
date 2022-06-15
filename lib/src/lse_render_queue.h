@@ -16,7 +16,7 @@
 #include "lse_color.h"
 #include "lse_types.h"
 
-#include "stc/forward.h"
+#include <stc/forward.h>
 
 typedef struct lse_render_command lse_render_command;
 typedef struct lse_render_queue lse_render_queue;

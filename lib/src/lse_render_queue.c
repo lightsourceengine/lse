@@ -16,7 +16,7 @@
 #define i_val lse_render_command
 #define i_tag render_commands
 #define i_opt c_no_clone | c_no_cmp | c_is_fwd
-#include "stc/cvec.h"
+#include <stc/cvec.h>
 
 lse_render_queue lse_render_queue_init() {
   return (lse_render_queue){ .commands = cvec_render_commands_with_capacity(8) };

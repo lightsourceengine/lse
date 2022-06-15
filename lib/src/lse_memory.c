@@ -13,7 +13,7 @@
 
 #include "lse_memory.h"
 
-#include "lse.h"
+#include <lse.h>
 
 void* lse_malloc(size_t size) {
   void* mem = malloc(size);

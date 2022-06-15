@@ -11,7 +11,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-#include "lse.h"
+#include <lse.h>
 
 #include <assert.h>
 #include <stdarg.h>

@@ -11,7 +11,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-#include "lse.h"
+#include <lse.h>
 
 lse_settings lse_settings_init() {
   return (lse_settings){

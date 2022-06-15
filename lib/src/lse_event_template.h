@@ -26,8 +26,8 @@
 
 #ifdef i_forward
 
-#include "lse.h"
-#include "stc/forward.h"
+#include <lse.h>
+#include <stc/forward.h>
 
 //
 // types

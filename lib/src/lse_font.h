@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 #include "lse_types.h"
 
 #define LSE_FROM_FLOAT_266(VALUE) (((float)(VALUE)) / 63.f)

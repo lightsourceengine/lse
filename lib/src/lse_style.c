@@ -21,7 +21,7 @@
 #include "lse_style_meta.h"
 #include "lse_text.h"
 #include "lse_util.h"
-#include "Yoga.h"
+#include <Yoga.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -41,7 +41,7 @@ typedef struct {
 #define i_key int32_t
 #define i_val style_property
 #define i_opt c_no_clone
-#include "stc/cmap.h"
+#include <stc/cmap.h>
 
 #define i_tag color_keyword_table
 #define i_key crawstr
@@ -49,12 +49,12 @@ typedef struct {
 #define i_hash crawstr_hash
 #define i_cmp crawstr_cmp
 #define i_opt c_no_clone
-#include "stc/cmap.h"
+#include <stc/cmap.h>
 
 #define i_tag properties
 #define i_key uint8_t
 #define i_opt c_no_clone
-#include "stc/cset.h"
+#include <stc/cset.h>
 
 #define CASE_COMPUTE_PX_PT(VALUE, CONTEXT)                                                                             \
   case LSE_STYLE_UNIT_PX:                                                                                              \

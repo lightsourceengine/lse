@@ -41,7 +41,7 @@ static void image_resource_drop(image_resource* resource);
 #define i_val image_resource
 #define i_valdrop image_resource_drop
 #define i_opt c_no_cmp | c_no_clone
-#include "stc/cmap.h"
+#include <stc/cmap.h>
 
 //
 // types

@@ -18,7 +18,7 @@ typedef struct SDL_Texture* sdl_texture_ptr;
 #define i_key lse_image_ptr
 #define i_val sdl_texture_ptr
 #define i_opt c_no_clone
-#include "stc/cmap.h"
+#include <stc/cmap.h>
 
 #include "lse_color.h"
 #include "lse_env.h"

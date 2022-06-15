@@ -13,14 +13,14 @@
 
 #include "lse_font_store.h"
 
-#include "freetype/freetype.h"
+#include <freetype/freetype.h>
+#include <assert.h>
 #include "lse_env.h"
 #include "lse_font.h"
 #include "lse_memory.h"
 #include "lse_object.h"
 #include "lse_string.h"
 #include "lse_util.h"
-#include <assert.h>
 
 #define i_tag font_table
 #define i_key lse_string_ptr
@@ -33,7 +33,7 @@
 #define i_eq crawstr_eq
 #define i_valdrop font_table_entry_drop
 #define i_opt c_no_clone
-#include "stc/cmap.h"
+#include <stc/cmap.h>
 
 typedef struct load_font_context load_font_context;
 

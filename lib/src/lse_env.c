@@ -26,13 +26,13 @@
 #define i_val lse_gamepad_ptr
 #define i_valdrop cvec_gamepads_value_drop
 #define i_opt c_no_clone | c_no_cmp | c_is_fwd
-#include "stc/cvec.h"
+#include <stc/cvec.h>
 
 #define i_tag windows
 #define i_val lse_window_ptr
 #define i_valdrop cvec_windows_value_drop
 #define i_opt c_no_clone | c_no_cmp | c_is_fwd
-#include "stc/cvec.h"
+#include <stc/cvec.h>
 
 #define i_tag mappings
 #define i_key lse_string_ptr
@@ -45,7 +45,7 @@
 #define i_val cmap_mappings_entry
 #define i_valdrop cmap_mappings_entry_drop
 #define i_opt c_no_clone | c_no_cmp | c_is_fwd
-#include "stc/cmap.h"
+#include <stc/cmap.h>
 
 static void default_on_gamepad_status(lse_gamepad* gamepad, bool connected, void* user_data);
 static void

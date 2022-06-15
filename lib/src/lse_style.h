@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "lse.h"
+#include <lse.h>
 #include "lse_matrix.h"
 #include "lse_rect.h"
 #include "lse_types.h"
