@@ -55,11 +55,11 @@ const copySource = async (gypi, dest) => {
   }
 
   if (target['lse:source_dirs']) {
-    for (const source_dir of target['lse:source_dirs']) {
-      const copyTo = join(dest, source_dir)
+    for (const sourceDir of target['lse:source_dirs']) {
+      const copyTo = join(dest, sourceDir)
 
       await ensureDir(copyTo)
-      await copy(join(from, source_dir), copyTo)
+      await copy(join(from, sourceDir), copyTo)
     }
   } else {
     for (const source of target.sources) {
@@ -74,7 +74,7 @@ const copySource = async (gypi, dest) => {
 
   if (licenses) {
     if (!Array.isArray(licenses)) {
-      licenses = [ licenses ]
+      licenses = [licenses]
     }
 
     for (const license of licenses) {

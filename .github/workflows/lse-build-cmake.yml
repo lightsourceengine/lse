@@ -8,19 +8,29 @@ on:
 jobs:
   lse-build-cmake-job:
     if: github.event_name == 'push' && contains(toJson(github.event.commits), '[ci skip]') == false
+
     defaults:
       run:
         shell: bash
+
     strategy:
       matrix:
         os: [ macos-10.15 ]
       fail-fast: false
+
     runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
+
+      - name: Yarn Cache
+        uses: egordm/gha-yarn-node-cache@v1
+
+      - name: Lint
+        run: yarn && yarn run lint
 
       - name: Setup CMake
         uses: jwlawson/actions-setup-cmake@v1.12

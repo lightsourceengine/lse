@@ -32,7 +32,7 @@
     "sync-core-addon-source": "bin/sync.mjs"
   },
   "scripts": {
-    "prepublishOnly": "run-s bundle test",
+    "prepublishOnly": "yarn run bundle && yarn run test",
     "install": "echo 'compile is deferred to build'",
     "bundle": "rimraf dist runtime && rollup -c",
     "build": "node-gyp build",
