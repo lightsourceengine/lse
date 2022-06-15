@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.20)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 include(config/cmake/functions.cmake)
 
 add_subdirectory(external)

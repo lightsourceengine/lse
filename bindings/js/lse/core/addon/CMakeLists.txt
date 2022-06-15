@@ -30,15 +30,15 @@ set_target_properties(lse-core
     PROPERTIES
     PREFIX ""
     SUFFIX ".node"
-    # TODO: this does not work on windows
-    APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup"
 )
 
-target_link_libraries(lse-core
-    freetype
+target_link_libraries(
+    lse-core
     lse
     nanosvg
     stc
     stb_image
+    freetype
     yoga
+    "-Wl,-undefined,dynamic_lookup"
 )
