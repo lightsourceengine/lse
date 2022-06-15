@@ -30,6 +30,8 @@ set_target_properties(lse-core
     PROPERTIES
     PREFIX ""
     SUFFIX ".node"
+    # TODO: this does not work on windows
+    APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup"
 )
 
 target_link_libraries(lse-core
@@ -39,6 +41,4 @@ target_link_libraries(lse-core
     stc
     stb_image
     yoga
-    # TODO: flag gcc/clang specific
-    "-undefined dynamic_lookup"
 )
