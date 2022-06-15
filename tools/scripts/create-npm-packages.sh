@@ -82,22 +82,23 @@ PUBLISHING_VERSION=$(get_version "${SOURCE_ROOT}/config/publishing/version.json"
 
 _pushd "${SOURCE_ROOT}"
 
-export npm_config_lse_install_opts="--release"
+yarn run bundle &
 
-yarn --cwd "${SOURCE_ROOT}" run sync-core-addon-source
-
-if [ "$1" = "--skip-yarn-build" ]; then
-  yarn run bundle
-else
-  yarn run rebuild --jobs max --release
+if [[ "$1" != "--skip-yarn-build" ]]; then
+  yarn run sync-core-addon-source
+  yarn run rebuild --jobs max --release &
 fi
 
 _popd
 
+wait
+
 rm -rf "${SOURCE_ROOT}/build/npm"
 mkdir -p "${PUBLISHABLE_DIR}"
 
-create_npm_package "core"
-create_npm_package "style"
-create_npm_package "react"
-create_npm_package "loader"
+create_npm_package "core" &
+create_npm_package "style" &
+create_npm_package "react" &
+create_npm_package "loader" &
+
+wait

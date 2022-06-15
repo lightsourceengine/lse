@@ -1,0 +1,51 @@
+name: npm-packages
+
+on: workflow_dispatch
+
+jobs:
+  npm-packages-job:
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      matrix:
+        os: [ macos-10.15 ]
+        node: [ 16.15.0 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install SDL2 (macos)
+        run: brew install SDL2
+
+      - name: Yarn Cache
+        uses: egordm/gha-yarn-node-cache@v1
+
+      - name: Yarn
+        run: yarn
+
+      - name: Create NPM Package Tarballs
+        run: ./tools/scripts/create-npm-packages.sh
+
+      - name: Test Package Insall
+        run: |
+          export SDL_AUDIODRIVER=dummy
+          export SDL_VIDEODRIVER=dummy
+          export LSE_SDL_LIBRARY=libSDL2.dylib
+          ./tools/scripts/test-npm-packages-install.sh
+
+      - name: Upload NPM Packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: lse-npm-packages-artifact
+          if-no-files-found: error
+          retention-days: 3
+          path: build/npm/publishable/*.tgz

@@ -38,6 +38,11 @@ export const loadAddon = () => {
     try: generateTryPaths()
   }
 
+  // bindings uses in to check for try, so delete try if generateTryPaths() return undefined
+  if (!opts.try) {
+    delete opts.try
+  }
+
   try {
     return bindings(opts)
   } catch (e) {
