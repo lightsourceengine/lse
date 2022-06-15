@@ -16,6 +16,6 @@ import { fileURLToPath } from 'url'
 
 export const PROJECT_ROOT = normalize(join(fileURLToPath(import.meta.url), '..', '..', '..', '..', '..', '..'))
 export const CONFIG_ROOT = join(PROJECT_ROOT, 'config')
-export const LSE_PACKAGE_ROOT = join(PROJECT_ROOT, 'js', 'lse')
-export const INTERNAL_PACKAGE_ROOT = join(PROJECT_ROOT, 'js', 'internal')
-export const NATIVE_ROOT = join(PROJECT_ROOT, 'native', 'lib')
+export const LSE_PACKAGE_ROOT = join(PROJECT_ROOT, 'bindings', 'js', 'lse')
+export const INTERNAL_PACKAGE_ROOT = join(PROJECT_ROOT, 'bindings', 'js', 'internal')
+export const NATIVE_ROOT = join(PROJECT_ROOT, 'lib')

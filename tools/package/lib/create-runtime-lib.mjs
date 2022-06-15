@@ -103,16 +103,6 @@ const checkOption = (options, name, values) => {
   assert(options[name] in values, `${name}: invalid value of ${options[name]}`)
 }
 
-const getInstallOpts = () => {
-  const opts = process.env.npm_config_lse_install_opts ?? ''
-
-  if (opts.indexOf('--debug') >= 0 || opts.indexOf('--release') >= 0) {
-    return opts
-  }
-
-  return opts + ' --release'
-}
-
 const getCrossProfile = (options) => {
   if (options.platformType === PlatformType.nclassic) {
     return options.platformType
@@ -487,15 +477,14 @@ export const compile = async (ctx) => {
   ctx.status.compile.update('yarn run bundle')
 
   await exec('yarn', '--force')
+  await exec('yarn', 'run', 'sync-core-addon-source')
 
-  process.env.npm_config_lse_install_opts = getInstallOpts()
-
-  ctx.status.compile.update('yarn run build')
+  ctx.status.compile.update('yarn run rebuild')
 
   if (ctx.options.isCrossCompile) {
-    await exec('cross', getCrossProfile(ctx.options), 'yarn', 'run', 'build')
+    await exec('cross', getCrossProfile(ctx.options), 'yarn', 'run', 'rebuild', '--jobs', 'max', '--release')
   } else {
-    await exec('yarn', 'run', 'build')
+    await exec('yarn', 'run', 'rebuild', '--jobs', 'max', '--release')
   }
 }
 
