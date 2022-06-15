@@ -33,7 +33,7 @@ const GAME_CONTROLLER_DB_URL =
 const ENTRY_POINT_PERMISSIONS = 0o777
 const TEMP_DIR = tmpdir()
 const VERSION_REGEX = /^(?:\d+|\*)(?:\.(?:\d+|\*))*$/
-const CI_URL = 'https://github.com/lightsourceengine/ci/releases/download/v1.1.0/'
+const CI_URL = 'https://github.com/lightsourceengine/ci/releases/download/v2.0.0/'
 
 const Platform = Object.freeze({
   windows: 'windows',
