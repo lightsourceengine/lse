@@ -339,7 +339,7 @@ static bool has_texture_format(lse_sdl* sdl, SDL_Renderer* renderer, Uint32 desi
   SDL_RendererInfo renderer_info;
 
   if (sdl->SDL_GetRendererInfo(renderer, &renderer_info) == 0) {
-    for (int32_t t = 0; t < renderer_info.num_texture_formats; t++) {
+    for (Uint32 t = 0; t < renderer_info.num_texture_formats; t++) {
       if (renderer_info.texture_formats[t] == desired_format) {
         return true;
       }

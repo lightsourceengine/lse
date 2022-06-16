@@ -31,7 +31,7 @@ struct lse_graphics_container_interface {
   void (*end_frame)(lse_graphics_container*);
 };
 
-#define LSE_GRAPHICS_CONTAINER_VTABLE(CLASS)                                                                           \
+#define LSE_GRAPHICS_CONTAINER_VTABLE()                                                                                \
   static lse_graphics_container_interface vtable = {                                                                   \
     .configure = configure,                                                                                            \
     .destroy = destroy,                                                                                                \

@@ -33,7 +33,7 @@ struct lse_node_interface {
   void (*on_style_property_change)(lse_node*, lse_style_property);
 };
 
-#define LSE_NODE_VTABLE(CLASS)                                                                                         \
+#define LSE_NODE_VTABLE()                                                                                              \
   static lse_node_interface vtable = {                                                                                 \
     .destroy = destroy,                                                                                                \
     .on_composite = on_composite,                                                                                      \

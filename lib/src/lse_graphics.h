@@ -52,7 +52,7 @@ struct lse_graphics_interface {
   void (*remove_image)(lse_graphics*, lse_image*);
 };
 
-#define LSE_GRAPHICS_VTABLE(CLASS)                                                                                     \
+#define LSE_GRAPHICS_VTABLE()                                                                                          \
   static lse_graphics_interface vtable = {                                                                             \
     .configure = configure,                                                                                            \
     .destroy = destroy,                                                                                                \
