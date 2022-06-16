@@ -13,7 +13,7 @@
 
 import { onwarn, autoExternal, commonjs, nodeEnv, resolve, runtimePackage } from '@internal/common/plugins'
 import { PROJECT_ROOT } from '@internal/common/paths'
-import { join } from 'path'
+import { join, posix } from 'path'
 
 const reactStandalone = (reactModule) => ({
   input: join(PROJECT_ROOT, 'node_modules', 'react', 'cjs', `${reactModule}.production.min.js`),
@@ -30,7 +30,8 @@ const reactStandalone = (reactModule) => ({
     resolve(),
     commonjs(),
     runtimePackage({
-      src: join(PROJECT_ROOT, 'node_modules', 'react', 'package.json'),
+      // XXX: copy uses globby. src is not a filename, but a globby pattern. globby does not support windows paths.
+      src: posix.join('..', '..', '..', '..', 'node_modules', 'react', 'package.json'),
       fields: {
         type: 'module',
         exports: {

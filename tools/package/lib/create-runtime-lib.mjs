@@ -531,7 +531,9 @@ const renameOrCopy = async (from, to) => {
   try {
     await rename(from, to)
   } catch (e) {
-    if (e.code === 'EXDEV') {
+    // linux: if /tmp is in its own partition, rename throws EXDEV (cross device link) -> try a copy instead
+    // windows: renaming from temp -> build throws EPERM (permissions) -> try a copy instead
+    if (e.code === 'EXDEV' || e.code === 'EPERM') {
       await ensureDir(to)
       await copy(from, to)
     } else {

@@ -28,6 +28,10 @@ jobs:
             recipe: recipe://pi-armv7l
             targetArch: armv7l
             gcc: 8.3.0
+          - host: windows-2019
+            recipe: recipe://windows-x64
+            targetArch: x64
+            gcc: default
 
     runs-on: ${{ matrix.host }}
 
