@@ -16,7 +16,7 @@
 
 #define PI_F 3.14159265f
 
-const lse_matrix k_identity = (lse_matrix){
+const lse_matrix k_identity = {
   1, 0, 0, 0, 1, 0,
 };
 

@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include "lse_color.h"
 #include "lse_matrix.h"
 #include "lse_rect.h"
 #include "lse_types.h"
@@ -84,3 +85,5 @@ lse_text_style lse_style_as_text_style(
     const lse_style_context* context,
     lse_font* font,
     const lse_size* content_box);
+
+lse_color lse_style_get_color_t(lse_style* style, lse_style_property prop);

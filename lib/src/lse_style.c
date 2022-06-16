@@ -720,6 +720,10 @@ bool lse_style_parse_numeric(lse_string* str, lse_style_value* numeric) {
   return result;
 }
 
+lse_color lse_style_get_color_t(lse_style* style, lse_style_property prop) {
+  return (lse_color){ .value = lse_style_get_color(style, prop) };
+}
+
 static bool parse_color_hex(const char* str, uint32_t* color) {
 #define BUFFER_SIZE 11
 

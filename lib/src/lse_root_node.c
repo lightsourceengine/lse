@@ -58,7 +58,7 @@ static void on_paint(lse_node* node, lse_graphics* graphics) {
 static void on_composite(lse_node* node, lse_graphics* graphics) {
   lse_style* style = lse_node_get_style(node);
 
-  lse_graphics_clear(graphics, (lse_color)lse_style_get_color(style, LSE_SP_BACKGROUND_COLOR));
+  lse_graphics_clear(graphics, lse_style_get_color_t(style, LSE_SP_BACKGROUND_COLOR));
 }
 
 // @override

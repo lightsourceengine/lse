@@ -82,7 +82,7 @@ static void on_composite(lse_node* node, lse_graphics* graphics) {
 
   lse_style* style = lse_node_get_style_or_empty(node);
 
-  lse_graphics_draw_render_object(graphics, base->surface, (lse_color)lse_style_get_color(style, LSE_SP_COLOR));
+  lse_graphics_draw_render_object(graphics, base->surface, lse_style_get_color_t(style, LSE_SP_COLOR));
 }
 
 // @override

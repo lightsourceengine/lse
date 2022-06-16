@@ -65,8 +65,7 @@ static void on_composite(lse_node* node, lse_graphics* graphics) {
 
   lse_style* style = lse_node_get_style_or_empty(node);
 
-  lse_graphics_draw_render_object(
-      graphics, base->surface, (lse_color)lse_style_get_color(style, LSE_SP_BACKGROUND_COLOR));
+  lse_graphics_draw_render_object(graphics, base->surface, lse_style_get_color_t(style, LSE_SP_BACKGROUND_COLOR));
 }
 
 // @override
@@ -95,13 +94,13 @@ static void on_paint(lse_node* node, lse_graphics* graphics) {
           graphics,
           &box,
           &border_radius,
-          (lse_color)lse_style_get_color(style, LSE_SP_BACKGROUND_COLOR),
+          lse_style_get_color_t(style, LSE_SP_BACKGROUND_COLOR),
           lse_style_compute_border_only(style, context),
-          (lse_color)lse_style_get_color(style, LSE_SP_BORDER_COLOR));
+          lse_style_get_color_t(style, LSE_SP_BORDER_COLOR));
     }
   } else {
     if (lse_style_has_property(style, LSE_SP_BACKGROUND_COLOR)) {
-      lse_graphics_queue_fill_rect(graphics, &box, (lse_color)lse_style_get_color(style, LSE_SP_BACKGROUND_COLOR));
+      lse_graphics_queue_fill_rect(graphics, &box, lse_style_get_color_t(style, LSE_SP_BACKGROUND_COLOR));
     }
 
     if (lse_image_can_render(self->background_image)) {
@@ -121,8 +120,7 @@ static void on_paint(lse_node* node, lse_graphics* graphics) {
     if (lse_style_has_property(style, LSE_SP_BORDER_COLOR) && lse_style_has_border_layout(node)) {
       edges = lse_style_get_border_edges(node);
 
-      lse_graphics_queue_stroke_rect(
-          graphics, &box, &edges, (lse_color)lse_style_get_color(style, LSE_SP_BORDER_COLOR));
+      lse_graphics_queue_stroke_rect(graphics, &box, &edges, lse_style_get_color_t(style, LSE_SP_BORDER_COLOR));
     }
   }
 
