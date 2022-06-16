@@ -73,7 +73,7 @@ static void on_composite(lse_node* node, lse_graphics* graphics) {
       graphics,
       base->surface,
       // TODO: send filter
-      LSE_MAKE_COLOR(255, 255, 255, 255));
+      LSE_COLOR_MAKE(255, 255, 255, 255));
 }
 
 // @override

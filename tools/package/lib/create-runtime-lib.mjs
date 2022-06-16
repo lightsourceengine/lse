@@ -27,13 +27,15 @@ import JSON5 from 'json5'
 import { pipeline } from 'stream'
 import { promisify } from 'util'
 import { resolveInternalPackagePath, resolveLsePackagePath } from './paths.mjs'
+import { URL } from 'url'
 
 const GAME_CONTROLLER_DB_URL =
   'https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt'
 const ENTRY_POINT_PERMISSIONS = 0o777
 const TEMP_DIR = tmpdir()
 const VERSION_REGEX = /^(?:\d+|\*)(?:\.(?:\d+|\*))*$/
-const CI_URL = 'https://github.com/lightsourceengine/ci/releases/download/v2.0.0/'
+const LSE_CI_URL = 'https://github.com/lightsourceengine/ci/releases/download/v2.0.0/'
+const SDL_ORG_URL = 'https://www.libsdl.org/release/'
 
 const Platform = Object.freeze({
   windows: 'windows',
@@ -334,12 +336,8 @@ export const buildOptions = (args, recipe) => {
     id: `lse-${recipe.platformType || recipe.platform}-${recipe.targetArch}`
   }
 
-  if (options.nodeSrc) {
-    if (options.nodeSrc in NodeSourceAlias) {
-      options.nodeSrc = NodeSourceAlias[options.nodeSrc]
-    } else if (!options.nodeSrc.endsWith('/')) {
-      options.nodeSrc += '/'
-    }
+  if (options.nodeSrc && options.nodeSrc in NodeSourceAlias) {
+    options.nodeSrc = NodeSourceAlias[options.nodeSrc]
   }
 
   options.isCrossCompile = (options.platform === Platform.linux && options.targetArch !== process.arch)
@@ -350,27 +348,27 @@ export const buildOptions = (args, recipe) => {
   }
 
   if (VERSION_REGEX.test(options.sdlRuntime)) {
-    let runtime
+    let runtimeUrl
 
     switch (options.platform) {
       case Platform.macos:
-        runtime = `https://www.libsdl.org/release/SDL2-${options.sdlRuntime}.dmg`
+        runtimeUrl = new URL(`SDL2-${options.sdlRuntime}.dmg`, SDL_ORG_URL)
         break
       case Platform.windows:
-        runtime = `https://www.libsdl.org/release/SDL2-${options.sdlRuntime}-win32-${options.targetArch}.zip`
+        runtimeUrl = new URL(`SDL2-${options.sdlRuntime}-win32-${options.targetArch}.zip`, SDL_ORG_URL)
         break
       case Platform.linux:
         if (options.platformType === PlatformType.pi) {
-          runtime = `${CI_URL}SDL2-${options.sdlRuntime}-${options.targetArch}-${options.platformType}.tgz`
+          runtimeUrl = new URL(`SDL2-${options.sdlRuntime}-${options.targetArch}-${options.platformType}.tgz`, LSE_CI_URL)
         }
         break
       default:
-        runtime = ''
         break
     }
 
-    options.sdlRuntime = runtime
-    assert(runtime, 'No prebuilt SDL2 libraries for this platform')
+    assert(runtimeUrl, 'No prebuilt SDL2 libraries for this platform')
+
+    options.sdlRuntime = runtimeUrl?.href ?? ''
   }
 
   if (options.sdlRuntime) {
@@ -515,11 +513,11 @@ export const installNode = async (ctx) => {
     ]
   }
 
-  const url = `${nodeSrc}${version}/${tag}${ext}`
+  const url = new URL(`${version}/${tag}${ext}`, nodeSrc)
   const temp = await emptyTempDir('lse-node-scratch')
 
   // extract to a temporary directory
-  await extract(url, temp, nodeMinimal ? { files, ...ctx.options } : ctx.options)
+  await extract(url.href, temp, nodeMinimal ? { files, ...ctx.options } : ctx.options)
 
   // ensure the directory containing the node folder exists in staging
   await ensureDir(ctx.staging.node)

@@ -101,11 +101,11 @@ TEST_CASE(lse_style_from_string_2, "should parse color values for backgroundColo
   bool result;
   // clang-format off
   from_string_color_input input[] = {
-    { "#F00", LSE_MAKE_COLOR(255, 0, 0, 255).value },
-    { "#FF0000", LSE_MAKE_COLOR(255, 0, 0, 255).value },
-    { "#F00F", LSE_MAKE_COLOR(255, 0, 0, 255).value },
-    { "#FF0000FF", LSE_MAKE_COLOR(255, 0, 0, 255).value },
-    { "red", LSE_MAKE_COLOR(255, 0, 0, 255).value },
+    { "#F00", LSE_COLOR_MAKE(255, 0, 0, 255).value },
+    { "#FF0000", LSE_COLOR_MAKE(255, 0, 0, 255).value },
+    { "#F00F", LSE_COLOR_MAKE(255, 0, 0, 255).value },
+    { "#FF0000FF", LSE_COLOR_MAKE(255, 0, 0, 255).value },
+    { "red", LSE_COLOR_MAKE(255, 0, 0, 255).value },
   };
   // clang-format on
 

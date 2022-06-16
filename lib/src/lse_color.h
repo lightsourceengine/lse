@@ -16,10 +16,11 @@
 #include "lse_cfg.h"
 #include <stdint.h>
 
-#define LSE_MAKE_COLOR(R, G, B, A)                                                                                     \
-  (lse_color) {                                                                                                        \
+#define LSE_COLOR_INIT(R, G, B, A)                                                                                     \
+  {                                                                                                                    \
     { .a = A, .b = B, .g = G, .r = R }                                                                                 \
   }
+#define LSE_COLOR_MAKE(R, G, B, A) (lse_color) LSE_COLOR_INIT(R, G, B, A)
 
 typedef union lse_color {
   struct {
