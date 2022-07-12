@@ -34,7 +34,7 @@ export default [
     input: 'src/exports.mjs',
     onwarn,
     output: {
-      file: 'runtime/lse-core.mjs',
+      file: 'runtime/index.mjs',
       format: 'esm',
       preferConst: true
     },
@@ -51,7 +51,7 @@ export default [
         fields: {
           version: lseVersion,
           exports: {
-            '.': './lse-core.mjs'
+            '.': './index.mjs'
           }
         }
       })

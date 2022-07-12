@@ -34,21 +34,21 @@ const lseStyle = ({ input, output, plugins }) => ({
 export default [
   lseStyle({
     input: 'src/exports.mjs',
-    output: 'dist/lse-style.mjs',
+    output: 'dist/index.mjs',
     plugins: [
       beautify()
     ]
   }),
   lseStyle({
     input: 'src/exports.mjs',
-    output: 'runtime/lse-style.mjs',
+    output: 'runtime/index.mjs',
     plugins: [
       minify(),
       runtimePackage({
         fields: {
           version: lseVersion,
           exports: {
-            '.': './lse-style.mjs'
+            '.': './index.mjs'
           }
         }
       })

@@ -11,54 +11,50 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { join, normalize } from 'path'
+import { join, dirname } from 'path'
 import { createRequire } from 'module'
+import { fileURLToPath } from 'url'
+import { emptyArray } from './util.mjs'
 
-const require = createRequire(import.meta.url)
+const { url } = import.meta
+const require = createRequire(url)
+const lseCorePath = dirname(fileURLToPath(url))
 
 /*
  * Optimized bindings implementation for the standalone lse runtime.
  *
- * The bindings npm package works, but performs a lot of IO. In standalone mode, lse-core.node will be in the
- * builtin package directory. Or, the user can supply an absolute path to lse-core.node using the LSE_CORE_PATH
- * environment variable (for development use cases). The optimization is simple: try to load from the env; otherwise
- * load from the builtin package path. Done.
+ * The bindings npm package works, but performs a lot of file I/O. In standalone mode, this function will be in
+ * $PACKAGE/share/intrinsic/@lse/core/index.mjs. The file path can be retrieved from import.meta.url. The @lse/core
+ * addon is located at $PACKAGE/share/intrinsic/@lse/core/$BUILD_TYPE/lse-core.node. The environment can specify
+ * a build type of 'release' or 'debug' via LSE_BUILD_TYPE env variable. In summary, lse-core.node is resolved from
+ * import.meta.url in standalone mode.
  *
- * The script is only included in standalone runtimes. Given that assumption, the builtin package directory can be
- * located using the node execPath. Also, this script will only run in the @lse/core package.
+ * bindings try paths are supported. The main use case is for processing LSE_CORE_PATH, an environment variable
+ * with a custom path for lse-core.node. The caller needs to build these paths.
  */
 const bindings = (opts) => {
-  // if absolute paths are provided (via LSE_CORE_PATH), try to load them first
-  if (opts.try?.length) {
-    for (const t of opts.try) {
-      const path = normalize(join(...t.map(value => value === 'bindings' ? opts.bindings : value)))
-      try {
-        return require(path)
-      } catch (e) {
-        console.warn(`bindings: '${e.message}' - ${path}`)
-      }
+  // if try paths are provided, try to load from them first.
+  for (const t of opts.try ?? emptyArray) {
+    if (t.at(-1) === 'bindings') {
+      t.splice(-1, 1, opts.bindings)
+    }
+
+    const tryPath = join(...t)
+
+    try {
+      return require(tryPath)
+    } catch (e) {
+      console.warn(`bindings: '${e.message}' - ${tryPath}`)
     }
   }
 
-  const { env, execPath, platform } = process
-  let buildType = env.LSE_BUILD_TYPE?.toLowerCase()
-  let lseHome
+  const buildType = (process.env.LSE_BUILD_TYPE ?? 'release').toLowerCase()
 
-  if (platform === 'win32') {
-    // lse_package/node/node.exe -> lse_package
-    lseHome = join(execPath, '..', '..')
-  } else {
-    // lse_package/node/bin/node -> lse_package
-    lseHome = join(execPath, '..', '..', '..')
+  if (buildType !== 'release' && buildType !== 'debug') {
+    throw Error(`Unsupported bindings build type: ${buildType}`)
   }
 
-  lseHome = normalize(lseHome)
-
-  if (buildType !== 'release' || buildType !== 'debug') {
-    buildType = 'release'
-  }
-
-  return require(join(lseHome, 'intrinsic', '@lse', 'core', buildType, opts.bindings))
+  return require(join(lseCorePath, buildType, opts.bindings))
 }
 
 export default bindings

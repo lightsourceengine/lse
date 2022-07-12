@@ -11,51 +11,46 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { join, dirname } from 'path'
-import { pathToFileURL } from 'url'
-
 /**
- * Light Source Engine Runtime (lse) module loader.
+ * lse runtime module loader
  *
- * lse has the concept of an intrinsic package. Intrinsic packages function like builtin packages, but they
- * are not baked into the node or veil executable. Intrinsic packages are known to the system, so they are
- * not quite global packages. From an app perspective, developers can treat intrinsics as builtins. Intrinsics are
- * named differently to distinguish them from other package types.
+ * In the runtime environment, @lse and react packages are bundled with the runtime, located at
+ * $PACKAGE/share/intrinsic. In node development environments, @lse and react packages are loaded from
+ * node_modules. For the runtime environment, this loader functions as a browser import map, mapping @lse
+ * and react specifiers to the intrinsic package directory.
  *
- * The known intrinsics packages are react and @lse namespaced packages.
+ * The term intrinsic is used because the term builtin is used for node packages baked in to, such as node:url. The
+ * primary reason for intrinsics is so node and veil executables can be interchangeable in the lse package.
  *
  * @ignore
  */
 
-const intrinsics = (() => {
-  const intrinsicFileURL = (...args) => {
-    const { platform, execPath } = process
-    let node = dirname(execPath)
+/*
+ * Resolve Note
+ *
+ * import.meta.url: file:///$PACKAGE/share/intrinsic/@lse/loader/index.mjs
+ *
+ * For URL, ../.. will bring us to intrinsic. The index.mjs is ignored. If this was a regular path, ../../..
+ * would get us to intrinsic.
+ */
+const base = new URL('../..', import.meta.url)
+const asFileUrl = (fragment) => new URL(fragment, base).href
 
-    if (platform !== 'win32') {
-      node = dirname(node)
-    }
-
-    return pathToFileURL(join(node, '..', 'intrinsic', ...args)).href
-  }
-
-  // TODO: duplicates information in package.json:exports for these packages (find a better way to get this info)
-  return {
-    '@lse/core': intrinsicFileURL('@lse', 'core', 'lse-core.mjs'),
-    '@lse/style': intrinsicFileURL('@lse', 'style', 'lse-style.mjs'),
-    '@lse/react': intrinsicFileURL('@lse', 'react', 'lse-react.mjs'),
-    react: intrinsicFileURL('react', 'react.mjs'),
-    'react/jsx-runtime': intrinsicFileURL('react', 'react-jsx-runtime.mjs')
-  }
-})()
-
-export const resolve = async (specifier, context, defaultResolve) => {
-  if (specifier in intrinsics) {
-    return {
-      url: intrinsics[specifier],
-      format: 'module'
-    }
-  } else {
-    return defaultResolve(specifier, context, defaultResolve)
-  }
+/*
+ * Import Map
+ *
+ * Inspired by browser import maps, but we map to a resolved { url, format } object. The url points to the
+ * resolved entry point in the 'intrinsic' directory of the package. The resolved object bypasses package.json
+ * exports, type, etc and the associated I/O calls to get that information.
+ */
+const importMap = {
+  '@lse/core': { url: asFileUrl('@lse/core/index.mjs'), format: 'module' },
+  '@lse/style': { url: asFileUrl('@lse/style/index.mjs'), format: 'module' },
+  '@lse/react': { url: asFileUrl('@lse/react/index.mjs'), format: 'module' },
+  // TODO: react needs to change back to commonjs (veil does not have a commonjs loader yet)
+  react: { url: asFileUrl('react/index.mjs'), format: 'module' },
+  'react/jsx-runtime': { url: asFileUrl('react/jsx-runtime.mjs'), format: 'module' }
 }
+
+export const resolve = async (specifier, context, defaultResolve) =>
+  importMap[specifier] ?? defaultResolve(specifier, context, defaultResolve)

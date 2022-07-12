@@ -16,7 +16,7 @@
   },
   "type": "module",
   "exports": {
-    ".": "./dist/lse-core.mjs"
+    ".": "./dist/index.mjs"
   },
   "dependencies": {
     "bindings": "^1.5.0"

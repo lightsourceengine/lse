@@ -35,7 +35,7 @@ export default [
   // dist
   lseReact({
     input: 'src/exports.mjs',
-    output: 'dist/lse-react.mjs',
+    output: 'dist/index.mjs',
     plugins: [
       beautify()
     ]
@@ -43,14 +43,14 @@ export default [
   // runtime
   lseReact({
     input: 'src/exports.mjs',
-    output: 'runtime/lse-react.mjs',
+    output: 'runtime/index.mjs',
     plugins: [
       minify(),
       runtimePackage({
         fields: {
           version: lseVersion,
           exports: {
-            '.': './lse-react.mjs'
+            '.': './index.mjs'
           }
         }
       })

@@ -15,11 +15,11 @@ import { onwarn, autoExternal, commonjs, nodeEnv, resolve, runtimePackage } from
 import { PROJECT_ROOT } from '@internal/common/paths'
 import { join, posix } from 'path'
 
-const reactStandalone = (reactModule) => ({
+const reactStandalone = (reactModule, outputFile) => ({
   input: join(PROJECT_ROOT, 'node_modules', 'react', 'cjs', `${reactModule}.production.min.js`),
   onwarn,
   output: {
-    file: `runtime/${reactModule}.mjs`,
+    file: `runtime/${outputFile}.mjs`,
     format: 'esm',
     preferConst: true
   },
@@ -35,8 +35,8 @@ const reactStandalone = (reactModule) => ({
       fields: {
         type: 'module',
         exports: {
-          '.': './react.mjs',
-          './jsx-runtime': './react-jsx-runtime.mjs'
+          '.': './index.mjs',
+          './jsx-runtime': './jsx-runtime.mjs'
         }
       }
     })
@@ -44,6 +44,6 @@ const reactStandalone = (reactModule) => ({
 })
 
 export default [
-  reactStandalone('react'),
-  reactStandalone('react-jsx-runtime')
+  reactStandalone('react', 'index'),
+  reactStandalone('react-jsx-runtime', 'jsx-runtime')
 ]

@@ -16,7 +16,7 @@
   },
   "type": "module",
   "exports": {
-    ".": "./dist/lse-react.mjs"
+    ".": "./dist/index.mjs"
   },
   "dependencies": {
     "@lse/core": "1.0.0-private.0",
