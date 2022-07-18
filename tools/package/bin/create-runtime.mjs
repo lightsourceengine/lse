@@ -13,7 +13,6 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { tmpdir } from 'os'
 import cl from 'command-line-args'
 import {
   installEntryPoint,
@@ -42,7 +41,7 @@ const CL_ARG_DEFS = [
   { name: 'recipe', type: String, required: true },
   { name: 'skip-compile', type: Boolean },
   { name: 'preserve-staging', type: Boolean },
-  { name: 'js-runtime', type: runtimeType,  defaultValue: 'node' },
+  { name: 'js-runtime', type: runtimeType, defaultValue: 'node' },
   { name: 'download-cache', type: String, defaultValue: '' }
 ]
 
