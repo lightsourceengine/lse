@@ -50,6 +50,9 @@ jobs:
           path: ${{ env.CI_DOWNLOAD_CACHE }}
           key: ${{ runner.os }}-${{ env.CI_DOWNLOAD_CACHE }}
 
+      - name: Setup Download Cache
+        run: mkdir -p "${GITHUB_WORKSPACE}/${CI_DOWNLOAD_CACHE}"
+
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:

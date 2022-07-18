@@ -19,7 +19,7 @@ export default [
     input: 'src/exports.mjs',
     onwarn,
     output: {
-      file: 'dist/lse-core.mjs',
+      file: 'dist/index.mjs',
       format: 'esm',
       preferConst: true
     },
