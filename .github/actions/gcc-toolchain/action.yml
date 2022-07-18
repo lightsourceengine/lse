@@ -13,7 +13,7 @@ runs:
     - run: |
         case "${{ inputs.arch }}" in
           armhf | armv6l | armv7l)
-            TOOLCHAIN_BIN="${GITHUB_WORKSPACE}/${CI_DOWNLOAD_CACHE}/x64-gcc-${{ inputs.version }}/arm-rpi-linux-gnueabihf/bin"
+            TOOLCHAIN_BIN="${CI_DOWNLOAD_CACHE}/x64-gcc-${{ inputs.version }}/arm-rpi-linux-gnueabihf/bin"
             echo "${TOOLCHAIN_BIN}" >> $GITHUB_PATH
             echo "CROSS_TOOLCHAIN_PREFIX=arm-rpi-linux-gnueabihf" >> $GITHUB_ENV
     

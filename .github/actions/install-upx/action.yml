@@ -7,7 +7,7 @@ runs:
         if [[ "${OSTYPE}" == "darwin"* ]]; then
           brew install upx
         else
-          UPX_DIR="${GITHUB_WORKSPACE}/${CI_DOWNLOAD_CACHE}/upx-3.96-amd64_linux"
+          UPX_DIR="${CI_DOWNLOAD_CACHE}/upx-3.96-amd64_linux"
           echo "${UPX_DIR}" >> $GITHUB_PATH
           
           if [[ ! -d "${UPX_DIR}" ]]; then

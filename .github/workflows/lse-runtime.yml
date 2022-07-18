@@ -51,7 +51,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.CI_DOWNLOAD_CACHE }}
 
       - name: Setup Download Cache
-        run: mkdir -p "${GITHUB_WORKSPACE}/${CI_DOWNLOAD_CACHE}"
+        run: mkdir -p "${CI_DOWNLOAD_CACHE}"
 
       - name: Install NodeJS
         uses: actions/setup-node@v1
@@ -72,7 +72,7 @@ jobs:
       - name: Yarn Cache
         uses: egordm/gha-yarn-node-cache@v1
 
-      - name: yarn run create-runtime
+      - name: Build Runtime
         run: |
           yarn
           yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache ${{ env.CI_DOWNLOAD_CACHE }}
