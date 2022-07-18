@@ -18,6 +18,7 @@ jobs:
           - host: macos-11
             recipe: recipe://macos-x64
             targetArch: x64
+            gcc: default
           - host: macos-11
             recipe: recipe://macos-arm64
             targetArch: arm64
