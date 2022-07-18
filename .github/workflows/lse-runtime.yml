@@ -18,13 +18,13 @@ jobs:
           - host: macos-11
             recipe: recipe://macos-x64
             targetArch: x64
-            gcc: default
           - host: macos-11
             recipe: recipe://macos-arm64
             targetArch: arm64
           - host: ubuntu-18.04
             recipe: recipe://linux-x64
             targetArch: x64
+            gcc: default
           - host: ubuntu-18.04
             recipe: recipe://pi-armv6l
             targetArch: armv6l
