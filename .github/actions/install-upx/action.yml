@@ -14,7 +14,6 @@ runs:
             UPX_TAR="upx-3.96-amd64_linux.tar.xz"
             cd "$(dirname "${UPX_DIR}")"
             curl -L https://github.com/upx/upx/releases/download/v3.96/${UPX_TAR} | tar -xJ
-            rm "${UPX_TAR}"
           fi
         fi
       shell: bash
