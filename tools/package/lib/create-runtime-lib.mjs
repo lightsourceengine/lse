@@ -58,7 +58,8 @@ const Arch = Object.freeze({
   x64: 'x64',
   armv6l: 'armv6l',
   armv7l: 'armv7l',
-  arm64: 'arm64'
+  arm64: 'arm64',
+  universal: 'universal'
 })
 
 const NodeSourceAlias = Object.freeze({
@@ -329,8 +330,13 @@ export const buildOptions = (args, recipe) => {
   const options = {
     ...ARG_DEFAULTS,
     ...args,
-    ...recipe,
-    id: `lse-${recipe.platformType || recipe.platform}-${recipe.targetArch}`
+    ...recipe
+  }
+
+  if (options.targetArch === 'universal') {
+    options.id = `lse-${recipe.platformType || recipe.platform}`
+  } else {
+    options.id = `lse-${recipe.platformType || recipe.platform}-${recipe.targetArch}`
   }
 
   if (!options.downloadCache) {
@@ -485,6 +491,14 @@ export const compile = async (ctx) => {
   if (ctx.options.isCrossCompile) {
     await exec('cross', getCrossProfile(ctx.options), 'yarn', 'run', 'rebuild', '--jobs', 'max', '--release')
   } else {
+    if (ctx.options.platform === Platform.macos) {
+      if (ctx.options.targetArch === Arch.universal || ctx.options.targetArch === Arch.arm64) {
+        // node-gyp adds -arch x86_64. adding -arch arm64 produces a plus size binary with both archs
+        process.env.CFLAGS = process.env.CXXFLAGS = process.env.LDFLAGS = '-arch arm64'
+      } else if (ctx.options.targetArch !== Arch.x64) {
+        throw Error(`Unsupported macos arch: ${ctx.options.targetArch}`)
+      }
+    }
     await exec('yarn', 'run', 'rebuild', '--jobs', 'max', '--release')
   }
 }

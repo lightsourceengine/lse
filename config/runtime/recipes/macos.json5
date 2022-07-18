@@ -1,0 +1,11 @@
+{
+  platform: 'macos',
+  targetArch: 'universal',
+  installGameControllerDb: true,
+  format: 'tgz',
+  nodeMinimal: true,
+  nodeBinCompress: false,
+  nodeBinStrip: true,
+  sdlInstall: true,
+  sdlRuntime: '2.0.22'
+}

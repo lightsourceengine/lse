@@ -18,11 +18,12 @@ jobs:
           - host: macos-11
             recipe: recipe://macos-x64
             targetArch: x64
-            gcc: default
+          - host: macos-11
+            recipe: recipe://macos-arm64
+            targetArch: arm64
           - host: ubuntu-18.04
             recipe: recipe://linux-x64
             targetArch: x64
-            gcc: default
           - host: ubuntu-18.04
             recipe: recipe://pi-armv6l
             targetArch: armv6l
@@ -34,7 +35,6 @@ jobs:
           - host: windows-2019
             recipe: recipe://windows-x64
             targetArch: x64
-            gcc: default
 
     runs-on: ${{ matrix.host }}
 
@@ -48,7 +48,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CI_DOWNLOAD_CACHE }}
-          key: ${{ runner.os }}-${{ env.CI_DOWNLOAD_CACHE }}
+          key: ${{ matrix.host }}-${{ matrix.targetArch }}-ci-download-cache
 
       - name: Setup Download Cache
         run: mkdir -p "${CI_DOWNLOAD_CACHE}"
