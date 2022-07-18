@@ -19,6 +19,7 @@ runs:
     
             if [[ ! -d "${TOOLCHAIN_BIN}" ]]; then
               TOOLCHAIN_TAR="x64-gcc-${{ inputs.version }}.tar.xz"
+              cd "${CI_DOWNLOAD_CACHE}"
               wget https://github.com/lightsourceengine/ci/releases/download/v2.0.0/${TOOLCHAIN_TAR}
               tar -xJf ${TOOLCHAIN_TAR}
               rm ${TOOLCHAIN_TAR}
