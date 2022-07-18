@@ -13,10 +13,16 @@ runs:
     - run: |
         case "${{ inputs.arch }}" in
           armhf | armv6l | armv7l)
-            wget https://github.com/lightsourceengine/ci/releases/download/v2.0.0/x64-gcc-${{ inputs.version }}.tar.xz
-            tar -xJf x64-gcc-${{ inputs.version }}.tar.xz
-            echo "${GITHUB_WORKSPACE}/x64-gcc-${{ inputs.version }}/arm-rpi-linux-gnueabihf/bin" >> $GITHUB_PATH
+            TOOLCHAIN_BIN="${GITHUB_WORKSPACE}/${CI_DOWNLOAD_CACHE}/x64-gcc-${{ inputs.version }}/arm-rpi-linux-gnueabihf/bin"
+            echo "${TOOLCHAIN_BIN}" >> $GITHUB_PATH
             echo "CROSS_TOOLCHAIN_PREFIX=arm-rpi-linux-gnueabihf" >> $GITHUB_ENV
+    
+            if [[ ! -d "${TOOLCHAIN_BIN}" ]]; then
+              TOOLCHAIN_TAR="x64-gcc-${{ inputs.version }}.tar.xz"
+              wget https://github.com/lightsourceengine/ci/releases/download/v2.0.0/${TOOLCHAIN_TAR}
+              tar -xJf ${TOOLCHAIN_TAR}
+              rm ${TOOLCHAIN_TAR}
+            fi
           ;;
           aarch64 | arm64)
             sudo apt-add-repository -y "ppa:ubuntu-toolchain-r/test"

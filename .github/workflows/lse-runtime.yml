@@ -2,6 +2,9 @@ name: lse-runtime
 
 on: workflow_dispatch
 
+env:
+  CI_DOWNLOAD_CACHE: "${{ github.workspace }}/ci-download-cache"
+
 jobs:
   lse-runtime-job:
     defaults:
@@ -12,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - host: macos-10.15
+          - host: macos-11
             recipe: recipe://macos-x64
             targetArch: x64
             gcc: default
@@ -44,8 +47,8 @@ jobs:
       - name: Download Cache
         uses: actions/cache@v3
         with:
-          path: ci-download-cache
-          key: ${{ runner.os }}-ci-download-cache
+          path: ${{ env.CI_DOWNLOAD_CACHE }}
+          key: ${{ runner.os }}-${{ env.CI_DOWNLOAD_CACHE }}
 
       - name: Install NodeJS
         uses: actions/setup-node@v1
@@ -69,7 +72,7 @@ jobs:
       - name: yarn run create-runtime
         run: |
           yarn
-          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache ci-download-cache
+          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache ${{ env.CI_DOWNLOAD_CACHE }}
 
       - name: Upload Runtime
         uses: actions/upload-artifact@v2

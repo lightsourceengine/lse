@@ -4,10 +4,17 @@ runs:
   using: "composite"
   steps:
     - run: |
-        if [[ "$OSTYPE" == "darwin"* ]]; then
+        if [[ "${OSTYPE}" == "darwin"* ]]; then
           brew install upx
         else
-          echo "${GITHUB_WORKSPACE}/upx-3.96-amd64_linux" >> $GITHUB_PATH
-          curl -L https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz | tar -xJ
+          UPX_DIR="${GITHUB_WORKSPACE}/${CI_DOWNLOAD_CACHE}/upx-3.96-amd64_linux"
+          echo "${UPX_DIR}" >> $GITHUB_PATH
+          
+          if [[ ! -d "${UPX_DIR}" ]]; then
+            UPX_TAR="upx-3.96-amd64_linux.tar.xz"
+            cd "$(dirname "${UPX_DIR}")"
+            curl -L https://github.com/upx/upx/releases/download/v3.96/${UPX_TAR} | tar -xJ
+            rm "${UPX_TAR}"
+          fi
         fi
       shell: bash
