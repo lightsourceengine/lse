@@ -16,7 +16,7 @@ import { PROJECT_ROOT, CONFIG_ROOT } from '@internal/common/paths'
 import { access, chmod, readFile, writeFile, rename } from 'fs/promises'
 import Handlebars from 'handlebars'
 import Spinnies from 'spinnies'
-import { copy, emptyDir, ensureDir, remove } from 'fs-extra'
+import { copy, emptyDir, ensureDir, ensureDirSync, remove } from 'fs-extra'
 import fetch from 'node-fetch'
 import { EOL, tmpdir } from 'os'
 import { spawn } from 'child_process'
@@ -195,8 +195,7 @@ const emptyTempDir = async (name) => {
 
 const downloadFile = async (url, options = {}) => {
   const file = basename(url)
-  const cache = join(TEMP_DIR, 'lse-create-runtime-cache')
-  const cacheFile = join(cache, file)
+  const cacheFile = join(options.downloadCache, file)
 
   try {
     await access(cacheFile)
@@ -204,8 +203,6 @@ const downloadFile = async (url, options = {}) => {
   } catch (e) {
     // not in cache
   }
-
-  await ensureDir(cache)
 
   const streamPipeline = promisify(pipeline)
   const response = await fetch(url, { redirect: 'follow' })
@@ -335,6 +332,12 @@ export const buildOptions = (args, recipe) => {
     ...recipe,
     id: `lse-${recipe.platformType || recipe.platform}-${recipe.targetArch}`
   }
+
+  if (!options.downloadCache) {
+    options.downloadCache = join(TEMP_DIR, 'lse-create-runtime-cache')
+  }
+
+  ensureDirSync(options.downloadCache)
 
   if (options.nodeSrc && options.nodeSrc in NodeSourceAlias) {
     options.nodeSrc = NodeSourceAlias[options.nodeSrc]

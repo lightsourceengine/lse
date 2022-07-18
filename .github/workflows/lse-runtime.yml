@@ -41,6 +41,12 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Download Cache
+        uses: actions/cache@v3
+        with:
+          path: ci-download-cache
+          key: ${{ runner.os }}-ci-download-cache
+
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:
@@ -63,7 +69,7 @@ jobs:
       - name: yarn run create-runtime
         run: |
           yarn
-          yarn run create-runtime --recipe ${{ matrix.recipe }}
+          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache ci-download-cache
 
       - name: Upload Runtime
         uses: actions/upload-artifact@v2
