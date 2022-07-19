@@ -13,7 +13,7 @@
 
 import { terser } from 'rollup-plugin-terser'
 import replace from 'rollup-plugin-re'
-import babel from '@rollup/plugin-babel'
+import { babel } from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import autoExternal from 'rollup-plugin-auto-external'
 import copy from 'rollup-plugin-copy'
@@ -93,6 +93,15 @@ export const runtimePackage = ({ src = 'package.json', dest = 'runtime', fields,
     copyOnce: !!once,
     targets: [
       { src, dest, transform }
+    ]
+  })
+}
+
+export const babelRuntime = () => {
+  return babel({
+    babelHelpers: 'inline',
+    plugins: [
+      ['@babel/plugin-proposal-optional-chaining', { loose: true }]
     ]
   })
 }

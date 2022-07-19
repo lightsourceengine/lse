@@ -1,8 +1,8 @@
 #!/bin/sh
 
 V_SHARE_HOME="$(cd "$(dirname "$0")/../share" && pwd -P)"
-V_NODE_BIN=${V_SHARE_HOME}/node/bin/node
-LSE_PATH="${V_SHARE_HOME}/intrinsic"
+V_JSRT={{jsRuntime.name}}
+V_JSRT_BIN="${V_SHARE_HOME}/${V_JSRT}/bin/${V_JSRT}"
 
 {{#if installGameControllerDb}}
 export LSE_GAME_CONTROLLER_DB="${LSE_GAME_CONTROLLER_DB:-"${V_SHARE_HOME}/assets/gamecontrollerdb.txt"}"
@@ -22,9 +22,9 @@ export LSE_SDL_LIBRARY="${LSE_SDL_LIBRARY:-"${V_SHARE_HOME}/lib/libSDL2.so"}"
 
 if [ "$1" = "--no-loader" ]; then
   shift
-  ${V_NODE_BIN} "$@"
+  ${V_JSRT_BIN} "$@"
 elif [ "$1" = "--loader" ]; then
-  ${V_NODE_BIN} "$@"
+  ${V_JSRT_BIN} "$@"
 else
-  ${V_NODE_BIN} --loader "${LSE_PATH}/@lse/loader/loader.mjs" "$@"
+  ${V_JSRT_BIN} --loader "${V_SHARE_HOME}/intrinsic/@lse/loader/loader.mjs" "$@"
 fi

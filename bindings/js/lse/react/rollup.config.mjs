@@ -11,7 +11,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { autoExternal, beautify, minify, onwarn, resolve, runtimePackage } from '@internal/common/plugins'
+import { autoExternal, babelRuntime, beautify, minify, onwarn, resolve, runtimePackage } from '@internal/common/plugins'
 import { injectVersion, lseVersion } from '@internal/common/version'
 
 const lseReact = ({ input, output, plugins }) => ({
@@ -45,6 +45,7 @@ export default [
     input: 'src/exports.mjs',
     output: 'runtime/index.mjs',
     plugins: [
+      babelRuntime(),
       minify(),
       runtimePackage({
         fields: {

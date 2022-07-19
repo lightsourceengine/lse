@@ -36,6 +36,7 @@ const TEMP_DIR = tmpdir()
 const VERSION_REGEX = /^(?:\d+|\*)(?:\.(?:\d+|\*))*$/
 const LSE_CI_URL = 'https://github.com/lightsourceengine/ci/releases/download/v2.0.0/'
 const SDL_ORG_URL = 'https://www.libsdl.org/release/'
+const LSE_VEIL_URL = 'https://github.com/lightsourceengine/veil/releases/download/'
 
 const Platform = Object.freeze({
   windows: 'windows',
@@ -115,11 +116,11 @@ const getCrossProfile = (options) => {
 }
 
 const getBinary = (ctx, binaryId) => {
-  if (binaryId === 'node') {
+  if (binaryId === ctx.options.jsRuntime.name) {
     if (ctx.options.platform === Platform.windows) {
-      return join(ctx.staging.node, 'node.exe')
+      return join(ctx.staging.jsRuntime, `${ctx.options.jsRuntime.name}.exe`)
     } else {
-      return join(ctx.staging.node, 'bin', 'node')
+      return join(ctx.staging.jsRuntime, 'bin', ctx.options.jsRuntime.name)
     }
   } else if (binaryId === 'core') {
     // find lse-core.node staging location via the manifest
@@ -195,7 +196,7 @@ const emptyTempDir = async (name) => {
 }
 
 const downloadFile = async (url, options = {}) => {
-  const file = basename(url)
+  const file = options.filename ?? basename(url)
   const cacheFile = join(options.downloadCache, file)
 
   try {
@@ -314,7 +315,7 @@ const createStatusReporter = () => {
   }
 
   return {
-    node: new Status('node'),
+    jsRuntime: new Status('jsRuntime'),
     compile: new Status('compile'),
     lib: new Status('lib'),
     assets: new Status('assets'),
@@ -503,6 +504,31 @@ export const compile = async (ctx) => {
   }
 }
 
+export const installVeil = async (ctx) => {
+  const { platform, platformType, targetArch } = ctx.options
+  const isWindows = platform === Platform.windows
+  const veilPlatform = platformType === PlatformType.pi ? platformType : platform
+  const veilFilename = `veil-${ctx.options.jsRuntime.version}-${veilPlatform}-${targetArch}${(isWindows ? '.zip' : '.tgz')}`
+  const baseUrl = new URL(`v${ctx.options.jsRuntime.version}/`, LSE_VEIL_URL)
+  const archive = new URL(veilFilename, baseUrl)
+  const license = new URL('LICENSE', baseUrl)
+  const licenseFilename = `LICENSE-v${ctx.options.jsRuntime.version}`
+  const target = ctx.staging.jsRuntime
+  const targetBin = isWindows ? target : join(target, 'bin')
+
+  ctx.status.jsRuntime.update('downloading executable')
+
+  await ensureDir(targetBin)
+  await extract(archive.href, targetBin, ctx.options)
+
+  ctx.status.jsRuntime.update('downloading LICENSE')
+
+  const cachedLicenseFile = await downloadFile(license.href, { ...ctx.options, filename: licenseFilename })
+  await copyTo(cachedLicenseFile, target, 'LICENSE')
+
+  ctx.status.jsRuntime.update('installed')
+}
+
 export const installNode = async (ctx) => {
   const { nodeMinimal, platform, targetArch, nodeSrc, nodeCustomTag } = ctx.options
   const { version } = process
@@ -512,7 +538,7 @@ export const installNode = async (ctx) => {
   let files
   let ext
 
-  ctx.status.node.update('installing')
+  ctx.status.jsRuntime.update('installing')
 
   if (platform === Platform.windows) {
     tag = `node-${version}${custom}-${nodePlatform}-${targetArch}`
@@ -537,10 +563,10 @@ export const installNode = async (ctx) => {
   await extract(url.href, temp, nodeMinimal ? { files, ...ctx.options } : ctx.options)
 
   // ensure the directory containing the node folder exists in staging
-  await ensureDir(ctx.staging.node)
+  await ensureDir(ctx.staging.jsRuntime)
 
   // move from temp to the node folder in staging
-  await renameOrCopy(join(temp, tag), ctx.staging.node)
+  await renameOrCopy(join(temp, tag), ctx.staging.jsRuntime)
 }
 
 // if rename fails due to cross partition error, fall back to copy. on some linux systems, /tmp is a separate partition
@@ -705,7 +731,7 @@ export const createContext = async (args) => {
       entryPoint: '',
       lib: 'lib',
       assets: 'assets',
-      node: 'node',
+      jsRuntime: ctx.options.jsRuntime.name,
       intrinsic: 'intrinsic',
       license: ''
     }
@@ -716,7 +742,7 @@ export const createContext = async (args) => {
       entryPoint: join(prefix, 'bin'),
       lib: join(prefix, 'share', 'lib'),
       assets: join(prefix, 'share', 'assets'),
-      node: join(prefix, 'share', 'node'),
+      jsRuntime: join(prefix, 'share', ctx.options.jsRuntime.name),
       intrinsic: join(prefix, 'share', 'intrinsic'),
       license: join(prefix, 'share', 'license')
     }

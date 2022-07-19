@@ -11,7 +11,16 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { autoExternal, beautify, esm, minify, onwarn, resolve, runtimePackage } from '@internal/common/plugins'
+import {
+  autoExternal,
+  babelRuntime,
+  beautify,
+  esm,
+  minify,
+  onwarn,
+  resolve,
+  runtimePackage
+} from '@internal/common/plugins'
 import { lseVersion } from '@internal/common/version'
 
 export default [
@@ -33,6 +42,7 @@ export default [
     plugins: [
       autoExternal(),
       resolve(),
+      babelRuntime(),
       minify(),
       runtimePackage({
         fields: {

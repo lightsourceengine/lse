@@ -11,7 +11,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import { alias, autoExternal, beautify, minify, onwarn, resolve, runtimePackage } from '@internal/common/plugins'
+import { alias, autoExternal, babelRuntime, beautify, minify, onwarn, resolve, runtimePackage } from '@internal/common/plugins'
 import { injectVersion, lseVersion } from '@internal/common/version'
 
 export default [
@@ -46,6 +46,7 @@ export default [
       }),
       resolve(),
       injectVersion(),
+      babelRuntime(),
       minify(),
       runtimePackage({
         fields: {

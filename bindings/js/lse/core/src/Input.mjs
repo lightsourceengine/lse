@@ -56,11 +56,11 @@ export class Input extends EventEmitter {
     this.#env = env
 
     this.#unlisten = [
-      env.on($EventAfterConfigure, this.#onInit.bind(this)),
-      env.on($EventBeforeDestroy, this.#onShutdown.bind(this))
+      env.on($EventAfterConfigure, this.__onInit.bind(this)),
+      env.on($EventBeforeDestroy, this.__onShutdown.bind(this))
     ]
 
-    this.#resetNavigationMapping()
+    this.__resetNavigationMapping()
   }
 
   get gamepads () {
@@ -101,15 +101,15 @@ export class Input extends EventEmitter {
     }
   }
 
-  #onInit () {
+  __onInit () {
     const env = this.#env
 
     $registerEventCallbacks(env, {
-      gamepad_status: this.#onGamepadStatus.bind(this),
-      gamepad_button: this.#onGamepadButton.bind(this),
-      keyboard_button: this.#onKeyboardButton.bind(this),
-      gamepad_axis_motion: this.#onGamepadAxisMotion.bind(this),
-      gamepad_hat_motion: this.#onGamepadHatMotion.bind(this)
+      gamepad_status: this.__onGamepadStatus.bind(this),
+      gamepad_button: this.__onGamepadButton.bind(this),
+      keyboard_button: this.__onKeyboardButton.bind(this),
+      gamepad_axis_motion: this.__onGamepadAxisMotion.bind(this),
+      gamepad_hat_motion: this.__onGamepadHatMotion.bind(this)
     })
 
     this.#keyboard = $getKeyboard(env)
@@ -122,7 +122,7 @@ export class Input extends EventEmitter {
     })
   }
 
-  #onShutdown () {
+  __onShutdown () {
     $resetEventCallbacks(this.#env)
 
     this.#unlisten.forEach(unlistener => unlistener())
@@ -133,7 +133,7 @@ export class Input extends EventEmitter {
     this.#env = null
   }
 
-  #onGamepadStatus (gamepad, connected) {
+  __onGamepadStatus (gamepad, connected) {
     if (connected) {
       this.#gamepadsById.set(gamepad.id, gamepad)
     } else {
@@ -143,11 +143,11 @@ export class Input extends EventEmitter {
     this.emitEvent(new GamepadEvent(this, gamepad, connected))
   }
 
-  #onKeyboardButton (keyspace, button, pressed, repeat) {
+  __onKeyboardButton (keyspace, button, pressed, repeat) {
     this.#lastActivity = now()
     const { keyboard } = this
 
-    this.#bubble(new KeyboardButtonEvent(this, keyboard, button, pressed, repeat))
+    this.__bubble(new KeyboardButtonEvent(this, keyboard, button, pressed, repeat))
 
     // TODO: stop prop
 
@@ -165,35 +165,35 @@ export class Input extends EventEmitter {
 
     // TODO: stop prop
 
-    this.#bubble(keyEvent)
+    this.__bubble(keyEvent)
   }
 
-  #onGamepadButton (id, keyspace, button, pressed, repeat) {
+  __onGamepadButton (id, keyspace, button, pressed, repeat) {
     this.#lastActivity = now()
     const gamepad = this.#gamepadsById.get(id)
     const ButtonEvent = keyspaceToButtonEvent[keyspace]
 
     // button up / down
 
-    this.#bubble(new ButtonEvent(this, gamepad, button, pressed, repeat))
+    this.__bubble(new ButtonEvent(this, gamepad, button, pressed, repeat))
   }
 
-  #onGamepadAxisMotion (id, keyspace, axis, value) {
+  __onGamepadAxisMotion (id, keyspace, axis, value) {
     this.#lastActivity = now()
     const device = this.#gamepadsById.get(id)
     const MotionEvent = keyspaceToMotionEvent[keyspace]
 
-    this.#bubble(new MotionEvent(this, device, axis, value))
+    this.__bubble(new MotionEvent(this, device, axis, value))
   }
 
-  #onGamepadHatMotion (id, keyspace, hat, value) {
+  __onGamepadHatMotion (id, keyspace, hat, value) {
     this.#lastActivity = now()
     const gamepad = this.#gamepadsById.get(id)
 
-    this.#bubble(new GamepadHatEvent(this, gamepad, hat, value))
+    this.__bubble(new GamepadHatEvent(this, gamepad, hat, value))
   }
 
-  #bubble (event) {
+  __bubble (event) {
     this.emitEvent(event)
 
     if (event.hasStopPropagation()) {
@@ -208,7 +208,7 @@ export class Input extends EventEmitter {
     }
   }
 
-  #resetNavigationMapping () {
+  __resetNavigationMapping () {
     this.#navigationMapping = new Map([
       [Key.DPAD_UP, Direction.UP],
       [Key.DPAD_RIGHT, Direction.RIGHT],

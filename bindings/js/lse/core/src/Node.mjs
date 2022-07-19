@@ -144,7 +144,7 @@ export class Node extends EventEmitter {
   }
 
   focus () {
-    if (!this.focusable || !this.#isConnectedToRoot() || this.hasFocus()) {
+    if (!this.focusable || !this.__isConnectedToRoot() || this.hasFocus()) {
       return
     }
 
@@ -154,15 +154,15 @@ export class Node extends EventEmitter {
     window.$setActiveNode(this)
 
     // remove the :focus-within pseudo class. if one was not added, this is a no-op
-    old?.#clearPseudoClassRecursive()
+    old?.__clearPseudoClassRecursive()
 
     // dispatch the :focus-within and :focus-without pseudo classes
     // this is a trivial implementation of pseudo classes that will not scale. a better design will be needed
     // to add more pseudos.
-    this.#dispatchFocusWithin()
-    this.#dispatchFocusWithout()
+    this.__dispatchFocusWithin()
+    this.__dispatchFocusWithout()
 
-    old?.#clearFocusWithin(this)
+    old?.__clearFocusWithin(this)
 
     if (old) {
       old.emitEvent(new FocusEvent(onBlur, old, this))
@@ -180,7 +180,7 @@ export class Node extends EventEmitter {
       window.$setActiveNode(null)
 
       // remove the :focus-within pseudo class.
-      this.#clearPseudoClassRecursive()
+      this.__clearPseudoClassRecursive()
 
       this.emitEvent(new FocusEvent(onBlur, this, null))
       this.$bubble(new FocusEvent(onFocusOut, this, null))
@@ -204,9 +204,9 @@ export class Node extends EventEmitter {
   }
 
   set styleClass (styleClass) {
-    if (this.#hasParentFocus()) {
+    if (this.__hasParentFocus()) {
       this.style.$setParent(styleClass[FOCUS_WITHOUT_PSEUDO_CLASS_ID])
-    } else if (this.hasFocus() || this.#window.activeNode?.#hasParentFocusOf(this)) {
+    } else if (this.hasFocus() || this.#window.activeNode?.__hasParentFocusOf(this)) {
       this.style.$setParent(styleClass[FOCUS_WITHIN_PSEUDO_CLASS_ID])
     } else {
       this.#styleClass = this.style.$setParent(styleClass)
@@ -261,7 +261,7 @@ export class Node extends EventEmitter {
     }
   }
 
-  #isConnectedToRoot () {
+  __isConnectedToRoot () {
     let walker = this
     const root = this.#window.root
 
@@ -276,7 +276,7 @@ export class Node extends EventEmitter {
     return false
   }
 
-  #dispatchFocusWithin () {
+  __dispatchFocusWithin () {
     let walker = this
 
     while (walker) {
@@ -288,20 +288,20 @@ export class Node extends EventEmitter {
     }
   }
 
-  #dispatchFocusWithout () {
+  __dispatchFocusWithout () {
     this.#children.forEach(child => {
       const focusWithout = child.#styleClass?.[FOCUS_WITHOUT_PSEUDO_CLASS_ID]
       focusWithout && child.#style?.$setParent(focusWithout)
-      child.#dispatchFocusWithout()
+      child.__dispatchFocusWithout()
     })
   }
 
-  #clearPseudoClassRecursive () {
-    this.#children.forEach(child => child.#clearPseudoClassRecursive())
+  __clearPseudoClassRecursive () {
+    this.#children.forEach(child => child.__clearPseudoClassRecursive())
     this.#style?.$setParent(this.#styleClass)
   }
 
-  #hasParentFocus () {
+  __hasParentFocus () {
     let { parent } = this
 
     while (parent) {
@@ -314,7 +314,7 @@ export class Node extends EventEmitter {
     return false
   }
 
-  #hasParentFocusOf (of) {
+  __hasParentFocusOf (of) {
     let { parent } = this
 
     while (parent) {
@@ -325,7 +325,7 @@ export class Node extends EventEmitter {
     }
   }
 
-  #clearFocusWithin (focused) {
+  __clearFocusWithin (focused) {
     let walker = focused
     const ancestors = []
 

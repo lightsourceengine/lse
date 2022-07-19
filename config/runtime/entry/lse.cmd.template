@@ -1,6 +1,7 @@
 @echo off
 
 SET V_SHARE_HOME=%~dp0
+SET V_JSRT={{jsRuntime.name}}
 
 {{#if install_game_controller_db}}
 IF "%LSE_GAME_CONTROLLER_DB%"=="" (SET LSE_GAME_CONTROLLER_DB=%V_SHARE_HOME%\assets\gamecontrollerdb.txt)
@@ -8,11 +9,11 @@ IF "%LSE_GAME_CONTROLLER_DB%"=="" (SET LSE_GAME_CONTROLLER_DB=%V_SHARE_HOME%\ass
 
 IF "%1"=="--no-loader" (
   SHIFT
-  START "" "%V_SHARE_HOME%\node\node.exe" %*
+  START "" "%V_SHARE_HOME%\%V_JSRT%\%V_JSRT%.exe" %*
 ) ELSE (
   IF "%1"=="--loader" (
-    START "" "%V_SHARE_HOME%\node\node.exe" %*
+    START "" "%V_SHARE_HOME%\%V_JSRT%\%V_JSRT%.exe" %*
   ) ELSE (
-    START "" "%V_SHARE_HOME%\node\node.exe" --loader "file://%V_SHARE_HOME%/intrinsic/@lse/loader/loader.mjs" %*
+    START "" "%V_SHARE_HOME%\%V_JSRT%\%V_JSRT%.exe" --loader "file://%V_SHARE_HOME%/intrinsic/@lse/loader/loader.mjs" %*
   )
 )
