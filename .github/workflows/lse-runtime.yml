@@ -73,7 +73,7 @@ jobs:
       - name: Build Runtime
         run: |
           yarn
-          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache "${{ env.CI_DOWNLOAD_CACHE }}" --js-runtime veil-1.5.0
+          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache "${{ env.CI_DOWNLOAD_CACHE }}" --js-runtime veil-v1.5.0
 
       - name: Upload Runtime
         uses: actions/upload-artifact@v2
