@@ -16,11 +16,8 @@ jobs:
       matrix:
         include:
           - host: macos-11
-            recipe: recipe://macos-x64
-            targetArch: x64
-          - host: macos-11
-            recipe: recipe://macos-arm64
-            targetArch: arm64
+            recipe: recipe://macos
+            targetArch: universal
           - host: ubuntu-18.04
             recipe: recipe://linux-x64
             targetArch: x64
@@ -52,12 +49,12 @@ jobs:
           key: ${{ matrix.host }}-${{ matrix.targetArch }}-ci-download-cache
 
       - name: Setup Download Cache
-        run: mkdir -p "${CI_DOWNLOAD_CACHE}"
+        run: mkdir -p "${{ env.CI_DOWNLOAD_CACHE }}"
 
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: 16.15.0
+          node-version: 16.16.0
 
       - name: Install GCC Toolchain
         if: startsWith(matrix.host, 'ubuntu') && matrix.gcc != 'default'
@@ -76,7 +73,7 @@ jobs:
       - name: Build Runtime
         run: |
           yarn
-          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache ${{ env.CI_DOWNLOAD_CACHE }}
+          yarn run create-runtime --recipe ${{ matrix.recipe }} --download-cache "${{ env.CI_DOWNLOAD_CACHE }}" --js-runtime veil-1.5.0
 
       - name: Upload Runtime
         uses: actions/upload-artifact@v2

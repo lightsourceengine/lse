@@ -20,7 +20,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: 16.15.0
+          node-version: 16.16.0
 
       - name: Yarn Cache
         uses: egordm/gha-yarn-node-cache@v1

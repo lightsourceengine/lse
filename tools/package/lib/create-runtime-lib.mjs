@@ -223,7 +223,7 @@ const extract = async (url, workingDir, options = {}) => {
     if (isTarGz(url)) {
       const file = await downloadFile(url, options)
 
-      await tar.x({ file, C: workingDir }, files)
+      await tarx({ C: workingDir, file, patterns: files })
     } else if (isZip(url)) {
       const file = await downloadFile(url, options)
 
@@ -242,7 +242,7 @@ const extract = async (url, workingDir, options = {}) => {
   } else if (isZip(url)) {
     await extractZip(url, workingDir, files)
   } else if (isTarGz(url)) {
-    await tar.x({ C: workingDir }, files)
+    await tarx({ C: workingDir, file: url, patterns: files })
   } else if (isDmg(url)) {
     await spawnAsync('hdiutil', ['attach', url, '-mountpoint', 'LSE_TEMP'])
 
@@ -334,7 +334,7 @@ export const buildOptions = (args, recipe) => {
     ...recipe
   }
 
-  if (options.targetArch === 'universal') {
+  if (options.targetArch === Arch.universal) {
     options.id = `lse-${recipe.platformType || recipe.platform}`
   } else {
     options.id = `lse-${recipe.platformType || recipe.platform}-${recipe.targetArch}`
@@ -508,7 +508,8 @@ export const installVeil = async (ctx) => {
   const { platform, platformType, targetArch } = ctx.options
   const isWindows = platform === Platform.windows
   const veilPlatform = platformType === PlatformType.pi ? platformType : platform
-  const veilFilename = `veil-${ctx.options.jsRuntime.version}-${veilPlatform}-${targetArch}${(isWindows ? '.zip' : '.tgz')}`
+  const archTag = platform !== Platform.macos ? `-${targetArch}` : ''
+  const veilFilename = `veil-v${ctx.options.jsRuntime.version}-${veilPlatform}${archTag}${(isWindows ? '.zip' : '.tgz')}`
   const baseUrl = new URL(`v${ctx.options.jsRuntime.version}/`, LSE_VEIL_URL)
   const archive = new URL(veilFilename, baseUrl)
   const license = new URL('LICENSE', baseUrl)
@@ -519,7 +520,7 @@ export const installVeil = async (ctx) => {
   ctx.status.jsRuntime.update('downloading executable')
 
   await ensureDir(targetBin)
-  await extract(archive.href, targetBin, ctx.options)
+  await extract(archive.href, targetBin, { files: ['veil'], ...ctx.options })
 
   ctx.status.jsRuntime.update('downloading LICENSE')
 
@@ -755,6 +756,11 @@ export const createContext = async (args) => {
   ctx.manifest = createManifest(ctx.staging)
 
   return ctx
+}
+
+const tarx = ({ C, file, patterns = [] }) => {
+  // NOTE: tar.x() does not work on some tar.gz archives (maybe module is too old)
+  return exec('tar', '-C', C, '-f', file, '-xz', ...patterns)
 }
 
 const createManifest = (staging) => [

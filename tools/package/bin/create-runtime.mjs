@@ -30,8 +30,8 @@ import {
   compressBinary
 } from '../lib/create-runtime-lib.mjs'
 
-const runtimeRegExp = /^(node|veil)(?:-(\d+\.\d+\.\d+))?$/
-const runtimeVersionDefault = { veil: '1.4.0' }
+const runtimeRegExp = /^(node|veil)(?:-v(\d+\.\d+\.\d+))?$/
+const runtimeVersionDefault = { veil: '1.5.0' }
 
 const runtimeType = rt => {
   const match = runtimeRegExp.exec(rt)
