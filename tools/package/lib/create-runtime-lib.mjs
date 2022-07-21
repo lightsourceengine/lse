@@ -494,21 +494,21 @@ export const compile = async (ctx) => {
     if (ctx.options.platformType === PlatformType.pi) {
       switch (ctx.options.targetArch) {
         case Arch.armv6l:
-          env.CROSS_COMPILER_ARCH = 'armv6zk'
-          env.CROSS_COMPILER_FLAGS = '-mfpu=vfp -mfloat-abi=hard -fno-short-enums'
+          process.env.CROSS_COMPILER_ARCH = 'armv6zk'
+          process.env.CROSS_COMPILER_FLAGS = '-mfpu=vfp -mfloat-abi=hard -fno-short-enums'
           break
         case Arch.armv7l:
-          env.CROSS_COMPILER_ARCH = 'armv7-a'
-          env.CROSS_COMPILER_FLAGS = '-mfpu=vfp3 -mfloat-abi=hard -mthumb -fno-short-enums'
+          process.env.CROSS_COMPILER_ARCH = 'armv7-a'
+          process.env.CROSS_COMPILER_FLAGS = '-mfpu=vfp3 -mfloat-abi=hard -mthumb -fno-short-enums'
           break
         case Arch.arm64:
-          env.CROSS_COMPILER_ARCH = 'armv8-a+crc+simd'
-          env.CROSS_COMPILER_FLAGS = '-mcpu=cortex-a72 -mtune=cortex-a72'
+          process.env.CROSS_COMPILER_ARCH = 'armv8-a+crc+simd'
+          process.env.CROSS_COMPILER_FLAGS = '-mcpu=cortex-a72 -mtune=cortex-a72'
           break
         default:
           throw Error(`unsupported pi arch: ${ctx.options.targetArch}`)
       }
-      env.CROSS_COMPILER_FLAGS += ' -mlittle-endian -fsigned-char'
+      process.env.CROSS_COMPILER_FLAGS += ' -mlittle-endian -fsigned-char'
     }
     await exec('cross', getCrossProfile(ctx.options), 'yarn', 'run', 'rebuild', '--jobs', 'max', '--release')
   } else {
