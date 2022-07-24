@@ -654,7 +654,6 @@ const installSDLFramework = async (ctx, name, runtime) => {
     const tempFramework = join(temp, framework)
 
     await extract(runtime, temp, ctx.options)
-    await emptyDir(join(tempFramework, 'Versions', 'A', 'Headers'))
     await rename(tempFramework, join(ctx.staging.lib, framework))
   } else {
     assert(false, `bad runtime value: ${runtime}`)
